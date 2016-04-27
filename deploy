@@ -1,0 +1,3 @@
+#!/bin/bash
+# This Git command pushs the dist/ folder to the gh-pages directory for deployment
+git subtree push --prefix dist origin gh-pages
