@@ -1,0 +1,1 @@
+var view=function(i){i.drawTransitTriangle=function(n,a){i.fill(n),i.triangle(0,0,0,i.windowHeight,a.x,a.y)}};
