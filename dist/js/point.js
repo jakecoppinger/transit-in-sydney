@@ -1,1 +1,1 @@
-var pointClass=function(n){n.Point=function(n){this.x=n.x,this.y=n.y,this.print=function(){console.log("x: "+x+", y: "+y)}}};
+var pointClass=function(t){t.Point=function(t){this.x=t.x,this.y=t.y,this.print=function(){console.log("x: "+x+", y: "+y)}},t.pointDistance=function(t,n){var i=t.x-n.x,o=t.y-n.y,s=Math.sqrt(Math.pow(i,2)+Math.pow(o,2));return s}};
