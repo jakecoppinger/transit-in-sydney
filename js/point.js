@@ -1,0 +1,1 @@
+var pointClass=function(n){n.Point=function(n){this.x=n.x,this.y=n.y,this.print=function(){console.log("x: "+x+", y: "+y)}}};

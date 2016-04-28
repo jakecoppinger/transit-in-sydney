@@ -1,0 +1,1 @@
+var finalObject=function(n){main(n),pointClass(n)},myp5=new p5(finalObject);
