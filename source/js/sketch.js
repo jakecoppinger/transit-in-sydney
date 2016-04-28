@@ -11,7 +11,7 @@ var sketchObject = function(p) {
 
     p.draw = function() {
 
-        p.background(255);
+        p.background(0);
 
         for (var i = 0; i < 500; i += 20) {
 
