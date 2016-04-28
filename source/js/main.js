@@ -22,56 +22,58 @@ var main = function(p) {
 
     p.setup = function() {
         p.createCanvas(p.windowWidth, p.windowHeight);
-        // p.createCanvas(720, 400);
-        //p.stroke((p.mouseX / p.windowWidth) * 255);
-
-        //console.log((p.mouseX / p.windowWidth) * 255);
-
-        p.noFill();
 
         // Defining global colors
         yellow = p.color(222, 207, 34);
         green = p.color(9, 141, 68);
         blue = p.color(0, 153, 202);
         pink = p.color(204, 25, 119);
-
-        p.assignPositions();
-
         background = 255;
+
+        // Assign topLeft et al. point objects
+        p.assignPositions();
     };
 
     p.draw = function() {
-
-
         // for (var i = 0; i < 500; i += 20) {
         //     p.bezier(p.mouseX - (i / 2.0), 40 + i, 410, 20, 440, 300, 240 - (i / 16.0), 300 + (i / 8.0));
         // }
 
         var mousePos = new p.Point({
-            x: p.mouseX / p.windowWidth,
-            y: p.mouseY / p.windowHeight
-        });
-
-        var mode1 = new p.Point({
             x: p.mouseX,
-            y: p.windowHeight / 3
+            y: p.mouseY
         });
 
-        var mode2 = new p.Point({
-            x: p.mouseX,
-            y: p.windowHeight * (2 / 3)
+        var xTriangleScaler = 6 / 10;
+
+        var yellowTriangle = new p.Point({
+            x: p.pointDistance(mousePos, bottomLeft) * xTriangleScaler,
+            y: p.windowHeight * (1 / 5)
         });
 
-        // mousePos.print();
-        // console.log("x:" + mousePos.x + ", y: " + mousePos.yl);
+        var greenTriangle = new p.Point({
+            x: p.pointDistance(mousePos, bottomRight) * xTriangleScaler,
+            y: p.windowHeight * (2 / 5)
+        });
+
+        var blueTriangle = new p.Point({
+            x: p.pointDistance(mousePos, topLeft) * xTriangleScaler,
+            y: p.windowHeight * (3 / 5)
+        });
+
+        var pinkTriangle = new p.Point({
+            x: p.pointDistance(mousePos, topRight) * xTriangleScaler,
+            y: p.windowHeight * (4 / 5)
+        });
 
         p.background(background);
         p.noStroke();
         p.blendMode(p.MULTIPLY);
-        p.fill(blue);
-        p.triangle(0, 0, 0, p.windowHeight, mode1.x, mode1.y);
-        p.fill(pink);
-        p.triangle(0, 0, 0, p.windowHeight, mode2.x, mode2.y);
+
+        p.drawTransitTriangle(blue, blueTriangle);
+        p.drawTransitTriangle(pink, pinkTriangle);
+        p.drawTransitTriangle(yellow, yellowTriangle);
+        p.drawTransitTriangle(green, greenTriangle);
     };
 
 
@@ -82,7 +84,6 @@ var main = function(p) {
 
     p.mouseMoved = function() {
         var color = (p.mouseY / p.windowWidth) * 255;
-
         p.stroke(color);
     };
 
