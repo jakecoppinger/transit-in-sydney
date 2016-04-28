@@ -1,25 +1,6 @@
-/*
-Gulpfile.js file for the tutorial:
-Using Gulp, SASS and Browser-Sync for your front end web development - DESIGNfromWITHIN
-http://designfromwithin.com/blog/gulp-sass-browser-sync-front-end-dev
+// Jake Coppinger 2016
 
-Steps:
-
-1. Install gulp globally:
-npm install --global gulp
-
-2. Type the following after navigating in your project folder:
-npm install gulp gulp-util gulp-sass gulp-uglify gulp-rename gulp-minify-css gulp-notify gulp-concat gulp-plumber browser-sync --save-dev
-
-3. Move this file in your project folder
-
-4. Setup your vhosts or just use static server (see 'Prepare Browser-sync for localhost' below)
-
-5. Type 'Gulp' and ster developing
-*/
-
-/* Needed gulp config */
-var gulp = require('gulp');  
+var gulp = require('gulp');
 var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
@@ -29,69 +10,91 @@ var concat = require('gulp-concat');
 var plumber = require('gulp-plumber');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
+var jshint = require('gulp-jshint');
+var del = require('del');
+var runSequence = require('run-sequence');
+var size = require('gulp-size');
+var merge = require('merge-stream');
+var run = require('gulp-run');
 
-/* Scripts task */
-gulp.task('scripts', function() {
-  return gulp.src([
-    /* Add your JS files here, they will be combined in this order */
-    'js/vendor/jquery-1.11.1.js',
-    'js/app.js'
-    ])
-    .pipe(gulp.dest('dist/js'))
-    //.pipe(rename({suffix: '.min'}))
-    //.pipe(uglify())
-    //.pipe(gulp.dest('dist/js'));
-});
-
-
-// Uglify & Lint JavaScript
 gulp.task('js', function() {
     var outputPath = 'js';
     return gulp.src([
-        'source/js/**/*.js'
-    ])
-
-    //.pipe($.jshint())
-        //.pipe($.jshint.reporter('jshint-stylish'))
-        .pipe(ngAnnotate()) // Fixes angularjs dependency injection
-        .pipe($.uglify({
+            'source/js/**/*.js'
+        ])
+        .pipe(uglify({
             preserveComments: false
         }))
         .pipe(gulp.dest('dist/' + outputPath))
 });
 
-
-// /* Sass task */
-// gulp.task('sass', function () {  
-//     gulp.src('source/scss/style.scss')
-//     .pipe(gulp.dest('dist/css'))
-//     .pipe(rename({suffix: '.min'}))
-//     .pipe(minifycss())
-//     .pipe(gulp.dest('dist/css'))
-//     /* Reload the browser CSS after every change */
-//     .pipe(reload({stream:true}));
-// });
-
-/* Reload task */
-gulp.task('bs-reload', function () {
-    browserSync.reload();
+// Lint JavaScript
+gulp.task('lint', function() {
+    return gulp.src([
+            'source/js/*.js'
+        ])
+        .pipe(reload({
+            stream: true,
+            once: true
+        }))
+        // .pipe(jshint.extract())
+        .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish'));
 });
 
-// Static server
-gulp.task('browser-sync', function() {
+gulp.task('serve', ['lint'], function() {
     browserSync.init({
         server: {
             baseDir: "source/"
-        }
+        },
+        open: false,
+        // notify: false,
+        logPrefix: 'TransitInSydney'
     });
-});
 
-/* Watch scss, js and html files, doing different things with each. */
-gulp.task('default', ['browser-sync'], function () {
     /* Watch scss, run the sass task on change. */
     // gulp.watch(['source/scss/*.scss', 'source/**/*.scss'], ['sass'])
     /* Watch app.js file, run the scripts task on change. */
-    gulp.watch(['source/js/app.js'], ['scripts'])
+    gulp.watch(['source/js/*.js'], ['lint', reload]);
+
+    gulp.watch(['source/js/libraries/*.js'], [reload]);
     /* Watch .html files, run the bs-reload task on change. */
-    gulp.watch(['source/*.html'], ['bs-reload']);
+    gulp.watch(['source/*.html'], [reload]);
 });
+
+// Copy All Files At The Root Level (app)
+gulp.task('copy', function() {
+    var html = gulp.src([
+        'source/*',
+    ], {
+        dot: true
+    }).pipe(gulp.dest('dist'));
+
+    var js = gulp.src([
+        'js/**/*'
+    ]).pipe(gulp.dest('dist/js'));
+
+    return merge(html, js)
+        .pipe(size({
+            title: 'copy'
+        }));
+});
+
+// Clean Output Directory
+gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
+
+gulp.task('build', ['clean'], function(cb) {
+    runSequence(
+        ['copy', 'js'],
+        cb);
+});
+
+gulp.task('deploy', function () {
+  return run('git subtree push --prefix dist origin gh-pages').exec()
+    //.pipe(gulp.dest('output'))    // Writes "Hello World\n" to output/echo. 
+})
+
+
+gulp.task('default', ['serve']);
+
+
