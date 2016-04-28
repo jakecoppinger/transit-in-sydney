@@ -1,4 +1,10 @@
-// Jake Coppinger 2016
+/*
+
+Jake Coppinger, 2016
+jakecoppinger.com
+jake@jakecoppinger.com
+
+*/
 
 var gulp = require('gulp');
 var sass = require('gulp-sass');
