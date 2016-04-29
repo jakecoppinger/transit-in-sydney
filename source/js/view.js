@@ -19,6 +19,6 @@ var view = function(p) {
         p.fill(color);
         p.ellipse(position.x,position.y,diameter,diameter);
         p.pop();
-    }
+    };
 
 };

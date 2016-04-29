@@ -14,10 +14,10 @@ var main = function(p) {
     var background;
 
     // Constant positions
-    var topLeft;
-    var topRight;
-    var bottomLeft;
-    var bottomRight;
+    // var topLeft;
+    // var topRight;
+    // var bottomLeft;
+    // var bottomRight;
 
     p.setup = function() {
         p.createCanvas(p.windowWidth, p.windowHeight);
@@ -31,7 +31,7 @@ var main = function(p) {
         background = 255;
 
         // Assign topLeft et al. point objects
-        p.assignPositions();
+        // p.assignPositions();
     };
 
     p.draw = function() {
@@ -45,58 +45,81 @@ var main = function(p) {
             y: p.mouseY
         });
 
+
         var xTriangleScaler = 6 / 10;
 
-        var yellowPos = {
-            x: p.pointDistance(mousePos, bottomLeft) * xTriangleScaler,
-            y: p.windowHeight * (1 / 5)
+        var mouseDiagonals = {
+            "positiveSlope1": p.percentageToWindowCorner(mousePos,windowCorners.bottomLeft, 
+            windowCorners.topRight),
+            "positiveSlope2": p.percentageToWindowCorner(mousePos,windowCorners.topRight, 
+            windowCorners.bottomLeft),
+            "negativeSlope1": p.percentageToWindowCorner(mousePos,windowCorners.topLeft, 
+            windowCorners.bottomRight),
+            "negativeSlope2": p.percentageToWindowCorner(mousePos,windowCorners.bottomRight, 
+            windowCorners.topLeft)
         };
 
-        var greenPos = {
-            x: p.pointDistance(mousePos, bottomRight) * xTriangleScaler,
-            y: p.windowHeight * (2 / 5)
+        var modes = {
+            "Yellow": {
+                color: yellow,
+                triangleXPoint: mouseDiagonals.positiveSlope1 * p.windowWidth,
+                yLevel: p.windowHeight * (1 / 5)
+            },
+            "Green": {
+                color: green,
+                triangleXPoint: 0, //p.pointDistance(mousePos, bottomRight) * xTriangleScaler,
+                yLevel: p.windowHeight * (2 / 5)
+            },
+            "Blue": {
+                color: blue,
+                triangleXPoint: 0, //p.pointDistance(mousePos, topLeft) * xTriangleScaler,
+                yLevel: p.windowHeight * (3 / 5)
+            },
+            "Pink": {
+                color: pink,
+                triangleXPoint: 0, //p.pointDistance(mousePos, topRight) * xTriangleScaler,
+                yLevel: p.windowHeight * (4 / 5)
+            }
         };
 
-        var bluePos = {
-            x: p.pointDistance(mousePos, topLeft) * xTriangleScaler,
-            y: p.windowHeight * (3 / 5)
-        };
-
-        var pinkPos = {
-            x: p.pointDistance(mousePos, topRight) * xTriangleScaler,
-            y: p.windowHeight * (4 / 5)
-        };
 
         p.background(background);
         p.noStroke();
         p.blendMode(p.MULTIPLY);
 
-        p.drawTransitTriangle(blue, bluePos);
-        p.drawTransitTriangle(pink, pinkPos);
-        p.drawTransitTriangle(yellow, yellowPos);
-        p.drawTransitTriangle(orange, greenPos);
+        // p.drawTransitTriangle(blue, bluePos);
+        // p.drawTransitTriangle(pink, pinkPos);
+        // p.drawTransitTriangle(yellow, yellowPos);
+        // p.drawTransitTriangle(orange, greenPos);
 
-        bluePos.x += 50;
-        p.drawCircle(blue, bluePos, 100);
-
+        // Draw triangles
+        for (var modeName in modes) {
+            if (modes.hasOwnProperty(modeName)) {
+                var mode = modes[modeName];
+                p.push();
+                p.fill(mode.color);
+                console.log(modeName + ": "+mode.triangleXPoint);
+                p.triangle(0, 0, 0, p.windowHeight, mode.triangleXPoint, mode.yLevel);
+                p.pop();
+            }
+        }
 
         p.fill(0);
         p.textSize(p.windowHeight / 40);
+
+
         var debugTextIndent = p.windowHeight / 20;
-        
+
         var debugString = "";
+        debugString += "fps: " + p.frameRate() + "\n";
 
-
-        p.text("hello\nworld", debugTextIndent, debugTextIndent);
-
-
-
+        p.text(debugString, debugTextIndent, debugTextIndent);
     };
 
 
     p.windowResized = function() {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
-        p.assignPositions();
+        // p.assignPositions();
     };
 
     p.mouseMoved = function() {
@@ -104,27 +127,28 @@ var main = function(p) {
         p.stroke(color);
     };
 
-    p.assignPositions = function() {
-        topLeft = new p.Point({
-            x: 0,
-            y: 0
-        });
 
-        topRight = new p.Point({
-            x: p.windowWidth,
-            y: 0
-        });
+    // p.assignPositions = function() {
+    //     topLeft = new p.Point({
+    //         x: 0,
+    //         y: 0
+    //     });
 
-        bottomLeft = new p.Point({
-            x: 0,
-            y: p.windowHeight
-        });
+    //     topRight = new p.Point({
+    //         x: p.windowWidth,
+    //         y: 0
+    //     });
 
-        bottomRight = new p.Point({
-            x: p.windowWidth,
-            y: p.windowHeight
-        });
+    //     bottomLeft = new p.Point({
+    //         x: 0,
+    //         y: p.windowHeight
+    //     });
 
-    };
+    //     bottomRight = new p.Point({
+    //         x: p.windowWidth,
+    //         y: p.windowHeight
+    //     });
+
+    // };
 
 };
