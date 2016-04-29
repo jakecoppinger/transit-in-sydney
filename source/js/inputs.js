@@ -15,7 +15,7 @@ var inputs = function(p) {
         var mouseDistance = p.pointDistance(mousePos, corner1);
         var maxDistance = p.pointDistance(corner1, corner2);
         return mouseDistance / maxDistance;
-    }
+    };
 
 
     p.windowCorners = function() {
