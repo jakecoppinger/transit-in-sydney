@@ -13,6 +13,9 @@ var main = function(p) {
     var yellow;
     var background;
 
+
+    var lastMouseY;
+    var lastMouseX;
     // Constant positions
     // var topLeft;
     // var topRight;
@@ -20,6 +23,7 @@ var main = function(p) {
     // var bottomRight;
 
     p.setup = function() {
+        // p.frameRate(10);
         p.createCanvas(p.windowWidth, p.windowHeight);
 
         // Defining global colors
@@ -29,126 +33,77 @@ var main = function(p) {
         pink = p.color(204, 25, 119);
         orange = p.color(230, 73, 35);
         background = 255;
-
-        // Assign topLeft et al. point objects
-        // p.assignPositions();
     };
 
     p.draw = function() {
-        // for (var i = 0; i < 500; i += 20) {
-        //     p.bezier(p.mouseX - (i / 2.0), 40 + i,
-        //      410, 20, 440, 300, 240 - (i / 16.0), 300 + (i / 8.0));
-        // }
+        // Only draw to screen when mouse is moving
+        if (p.mouseX != lastMouseX || p.mouseY != lastMouseY) {
+            console.log("Drawing");
 
-        var mousePos = new p.Point({
-            x: p.mouseX,
-            y: p.mouseY
-        });
+            var mousePos = new p.Point({
+                x: p.mouseX,
+                y: p.mouseY
+            });
 
+            var xTriangleScaler = 6 / 10;
 
-        var xTriangleScaler = 6 / 10;
+            var windowCorners = p.windowCorners();
 
-        var mouseDiagonals = {
-            "positiveSlope1": p.percentageToWindowCorner(mousePos,windowCorners.bottomLeft, 
-            windowCorners.topRight),
-            "positiveSlope2": p.percentageToWindowCorner(mousePos,windowCorners.topRight, 
-            windowCorners.bottomLeft),
-            "negativeSlope1": p.percentageToWindowCorner(mousePos,windowCorners.topLeft, 
-            windowCorners.bottomRight),
-            "negativeSlope2": p.percentageToWindowCorner(mousePos,windowCorners.bottomRight, 
-            windowCorners.topLeft)
-        };
+            var mouseDiagonals = {
+                "posSlope1": p.percentageToWindowCorner(mousePos, windowCorners.bottomLeft,
+                    windowCorners.topRight),
+                "posSlope2": p.percentageToWindowCorner(mousePos, windowCorners.topRight,
+                    windowCorners.bottomLeft),
+                "negSlope1": p.percentageToWindowCorner(mousePos, windowCorners.topLeft,
+                    windowCorners.bottomRight),
+                "negSlope2": p.percentageToWindowCorner(mousePos, windowCorners.bottomRight,
+                    windowCorners.topLeft)
+            };
 
-        var modes = {
-            "Yellow": {
-                color: yellow,
-                triangleXPoint: mouseDiagonals.positiveSlope1 * p.windowWidth,
-                yLevel: p.windowHeight * (1 / 5)
-            },
-            "Green": {
-                color: green,
-                triangleXPoint: 0, //p.pointDistance(mousePos, bottomRight) * xTriangleScaler,
-                yLevel: p.windowHeight * (2 / 5)
-            },
-            "Blue": {
-                color: blue,
-                triangleXPoint: 0, //p.pointDistance(mousePos, topLeft) * xTriangleScaler,
-                yLevel: p.windowHeight * (3 / 5)
-            },
-            "Pink": {
-                color: pink,
-                triangleXPoint: 0, //p.pointDistance(mousePos, topRight) * xTriangleScaler,
-                yLevel: p.windowHeight * (4 / 5)
-            }
-        };
+            var modes = {
+                "Yellow": {
+                    color: yellow,
+                    magnitude: mouseDiagonals.posSlope1,
+                    yLevel: p.windowHeight * (1 / 5)
+                },
+                "Green": {
+                    color: orange,
+                    magnitude: mouseDiagonals.posSlope2,
+                    yLevel: p.windowHeight * (2 / 5)
+                },
+                "Blue": {
+                    color: blue,
+                    magnitude: mouseDiagonals.negSlope1,
+                    yLevel: p.windowHeight * (3 / 5)
+                },
+                "Pink": {
+                    color: pink,
+                    magnitude: mouseDiagonals.negSlope2,
+                    yLevel: p.windowHeight * (4 / 5)
+                }
+            };
 
+            p.background(background);
+            p.noStroke();
+            p.blendMode(p.MULTIPLY);
 
-        p.background(background);
-        p.noStroke();
-        p.blendMode(p.MULTIPLY);
-
-        // p.drawTransitTriangle(blue, bluePos);
-        // p.drawTransitTriangle(pink, pinkPos);
-        // p.drawTransitTriangle(yellow, yellowPos);
-        // p.drawTransitTriangle(orange, greenPos);
-
-        // Draw triangles
-        for (var modeName in modes) {
-            if (modes.hasOwnProperty(modeName)) {
-                var mode = modes[modeName];
-                p.push();
-                p.fill(mode.color);
-                console.log(modeName + ": "+mode.triangleXPoint);
-                p.triangle(0, 0, 0, p.windowHeight, mode.triangleXPoint, mode.yLevel);
-                p.pop();
-            }
+            // Draw triangles
+            p.drawTransitTriangles(modes);
+            p.drawDebugText(modes);
+            // p.drawTransitCircles(modes);
         }
-
-        p.fill(0);
-        p.textSize(p.windowHeight / 40);
-
-
-        var debugTextIndent = p.windowHeight / 20;
-
-        var debugString = "";
-        debugString += "fps: " + p.frameRate() + "\n";
-
-        p.text(debugString, debugTextIndent, debugTextIndent);
+        lastMouseY = p.mouseY;
+        lastMouseX = p.mouseX;
     };
 
 
     p.windowResized = function() {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
-        // p.assignPositions();
     };
 
     p.mouseMoved = function() {
-        var color = (p.mouseY / p.windowWidth) * 255;
-        p.stroke(color);
+
+
+
     };
-
-
-    // p.assignPositions = function() {
-    //     topLeft = new p.Point({
-    //         x: 0,
-    //         y: 0
-    //     });
-
-    //     topRight = new p.Point({
-    //         x: p.windowWidth,
-    //         y: 0
-    //     });
-
-    //     bottomLeft = new p.Point({
-    //         x: 0,
-    //         y: p.windowHeight
-    //     });
-
-    //     bottomRight = new p.Point({
-    //         x: p.windowWidth,
-    //         y: p.windowHeight
-    //     });
-
-    // };
-
 };
