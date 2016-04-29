@@ -7,7 +7,6 @@ jake@jakecoppinger.com
 */
 
 var main = function(p) {
-
     var purple;
     var blue;
     var green;
@@ -28,7 +27,7 @@ var main = function(p) {
         green = p.color(9, 141, 68);
         blue = p.color(0, 153, 202);
         pink = p.color(204, 25, 119);
-        orange = p.color(230,73,35);
+        orange = p.color(230, 73, 35);
         background = 255;
 
         // Assign topLeft et al. point objects
@@ -77,11 +76,18 @@ var main = function(p) {
         p.drawTransitTriangle(yellow, yellowPos);
         p.drawTransitTriangle(orange, greenPos);
 
-
         bluePos.x += 50;
-        p.drawCircle(blue,bluePos,100);
+        p.drawCircle(blue, bluePos, 100);
 
 
+        p.fill(0);
+        p.textSize(p.windowHeight / 40);
+        var debugTextIndent = p.windowHeight / 20;
+        
+        var debugString = "";
+
+
+        p.text("hello\nworld", debugTextIndent, debugTextIndent);
 
 
 
