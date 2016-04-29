@@ -28,6 +28,7 @@ var main = function(p) {
         green = p.color(9, 141, 68);
         blue = p.color(0, 153, 202);
         pink = p.color(204, 25, 119);
+        orange = p.color(230,73,35);
         background = 255;
 
         // Assign topLeft et al. point objects
@@ -36,7 +37,8 @@ var main = function(p) {
 
     p.draw = function() {
         // for (var i = 0; i < 500; i += 20) {
-        //     p.bezier(p.mouseX - (i / 2.0), 40 + i, 410, 20, 440, 300, 240 - (i / 16.0), 300 + (i / 8.0));
+        //     p.bezier(p.mouseX - (i / 2.0), 40 + i,
+        //      410, 20, 440, 300, 240 - (i / 16.0), 300 + (i / 8.0));
         // }
 
         var mousePos = new p.Point({
@@ -73,7 +75,7 @@ var main = function(p) {
         p.drawTransitTriangle(blue, blueTriangle);
         p.drawTransitTriangle(pink, pinkTriangle);
         p.drawTransitTriangle(yellow, yellowTriangle);
-        p.drawTransitTriangle(green, greenTriangle);
+        p.drawTransitTriangle(orange, greenTriangle);
     };
 
 
