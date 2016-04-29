@@ -16,6 +16,8 @@ var main = function(p) {
 
     var lastMouseY;
     var lastMouseX;
+
+
     // Constant positions
     // var topLeft;
     // var topRight;
@@ -23,7 +25,8 @@ var main = function(p) {
     // var bottomRight;
 
     p.setup = function() {
-        // p.frameRate(10);
+        
+        p.frameRate(4);
         p.createCanvas(p.windowWidth, p.windowHeight);
 
         // Defining global colors
@@ -33,19 +36,18 @@ var main = function(p) {
         pink = p.color(204, 25, 119);
         orange = p.color(230, 73, 35);
         background = 255;
+
     };
 
     p.draw = function() {
         // Only draw to screen when mouse is moving
         if (p.mouseX != lastMouseX || p.mouseY != lastMouseY) {
-            console.log("Drawing");
+            console.log("Drawing!");
 
             var mousePos = new p.Point({
                 x: p.mouseX,
                 y: p.mouseY
             });
-
-            var xTriangleScaler = 6 / 10;
 
             var windowCorners = p.windowCorners();
 
@@ -90,7 +92,8 @@ var main = function(p) {
             // Draw triangles
             p.drawTransitTriangles(modes);
             p.drawDebugText(modes);
-            // p.drawTransitCircles(modes);
+            p.drawTransitCircles(modes);
+            p.drawTransitArcs(modes);
         }
         lastMouseY = p.mouseY;
         lastMouseX = p.mouseX;

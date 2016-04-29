@@ -21,13 +21,12 @@ var view = function(p) {
         p.pop();
     };
 
-
     p.drawTransitTriangles = function(modes) {
         // Draw triangles
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
-                var triangleXPoint = mode.magnitude * p.windowWidth;
+                var triangleXPoint = mode.magnitude * p.windowWidth / 2;
                 p.push();
                 p.fill(mode.color);
                 p.triangle(0, 0, 0, p.windowHeight, triangleXPoint, mode.yLevel);
@@ -48,6 +47,7 @@ var view = function(p) {
     };
 
     p.drawTransitCircles = function(modes) {
+        p.push();
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
@@ -59,6 +59,41 @@ var view = function(p) {
                 p.drawCircle(mode.color, circlePosition, circleDiameter);
             }
         }
+        p.pop();
     };
+
+    p.drawTransitArcs = function(modes) {
+        p.push();
+
+        for (var modeName in modes) {
+            if (modes.hasOwnProperty(modeName)) {
+                var mode = modes[modeName];
+                var leftPointPos = {
+                    x: mode.magnitude * p.windowWidth,
+                    y: mode.yLevel
+                };
+
+                p.noFill();
+                p.stroke(255, 102, 0);
+
+                // p.beginShape();
+                // p.vertex(leftPointPos.x, leftPointPos.y);
+
+                // p.bezierVertex(80, 0, 80, 75, 30, 75);
+                // p.bezierVertex(50, 80, 60, 25, 30, 20);
+                // p.endShape();
+
+                var triangleXPoint = mode.magnitude * p.windowWidth / 2;
+                var circleDiameter = mode.magnitude * p.windowHeight / 3;
+                p.line(leftPointPos.x, mode.yLevel - (circleDiameter / 2), triangleXPoint, mode.yLevel);
+                p.line(leftPointPos.x, mode.yLevel + (circleDiameter / 2), triangleXPoint, mode.yLevel);
+
+            }
+        }
+        p.pop();
+    };
+
+
+
 
 };
