@@ -1,0 +1,1 @@
+var inputs=function(t){t.topLeftPercentage=function(){return t.pointDistance({x:t.mouseX,y:t.mouseY},bottomLeft)/t.pointDistance(topRight,bottomLeft)}};
