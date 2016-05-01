@@ -25,8 +25,6 @@ var main = function(p) {
     // var bottomRight;
 
     p.setup = function() {
-        
-        p.frameRate(4);
         p.createCanvas(p.windowWidth, p.windowHeight);
 
         // Defining global colors
