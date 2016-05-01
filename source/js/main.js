@@ -12,21 +12,11 @@ var main = function(p) {
     var green;
     var yellow;
     var background;
-
-
     var lastMouseY;
     var lastMouseX;
 
-
-    // Constant positions
-    // var topLeft;
-    // var topRight;
-    // var bottomLeft;
-    // var bottomRight;
-
     p.setup = function() {
         p.createCanvas(p.windowWidth, p.windowHeight);
-
         // Defining global colors
         yellow = p.color(222, 207, 34);
         green = p.color(9, 141, 68);
@@ -34,7 +24,6 @@ var main = function(p) {
         pink = p.color(204, 25, 119);
         orange = p.color(230, 73, 35);
         background = 255;
-
     };
 
     p.draw = function() {
