@@ -14,13 +14,6 @@ var view = function(p) {
         p.pop();
     };
 
-    p.drawCircle = function(color, position, diameter) {
-        p.push();
-        p.fill(color);
-        p.ellipse(position.x, position.y, diameter, diameter);
-        p.pop();
-    };
-
     p.drawTransitTriangles = function(modes) {
         // Draw triangles
         for (var modeName in modes) {
@@ -67,6 +60,9 @@ var view = function(p) {
 
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
+
+                var controlLength = p.windowWidth / 10;
+
                 var mode = modes[modeName];
                 var circleCenter = {
                     x: mode.magnitude * p.windowWidth,
@@ -91,22 +87,22 @@ var view = function(p) {
 
                 var top = {
                     startControlP: {
-                        x: triangleXPoint + 100,
-                        y: mode.yLevel
+                        x: triangleXPoint + controlLength,
+                        y: mode.yLevel - 50
                     },
                     endControlP: {
-                        x: circleCenter.x - 100, // fiddle here
+                        x: circleCenter.x - controlLength, // fiddle here
                         y: mode.yLevel - (circleDiameter / 2)
                     }
                 };
 
                 var bottom = {
                     startControlP: {
-                        x: triangleXPoint + 100,
-                        y: mode.yLevel
+                        x: triangleXPoint + controlLength,
+                        y: mode.yLevel + 50
                     },
                     endControlP: {
-                        x: circleCenter.x - 100, // fiddle here
+                        x: circleCenter.x - controlLength, // fiddle here
                         y: mode.yLevel + (circleDiameter / 2)
                     }
                 };
@@ -120,7 +116,7 @@ var view = function(p) {
                 p.vertex(startPoint.x, startPoint.y);
 
                 // Draw top bezier
-                p.bezierVertexPoint(top.startControlP,top.endControlP, topEndPoint);
+                p.bezierVertexPoint(top.startControlP, top.endControlP, topEndPoint);
                 // Vertex at bottom of circle
                 p.vertexPoint(bottomEndPoint);
 
