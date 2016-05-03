@@ -85,8 +85,83 @@ var view = function(p) {
 
                 var triangleXPoint = mode.magnitude * p.windowWidth / 2;
                 var circleDiameter = mode.magnitude * p.windowHeight / 3;
-                p.line(leftPointPos.x, mode.yLevel - (circleDiameter / 2), triangleXPoint, mode.yLevel);
-                p.line(leftPointPos.x, mode.yLevel + (circleDiameter / 2), triangleXPoint, mode.yLevel);
+
+                // p.line(leftPointPos.x, mode.yLevel - (circleDiameter / 2), triangleXPoint, mode.yLevel);
+                // p.line(leftPointPos.x, mode.yLevel + (circleDiameter / 2), triangleXPoint, mode.yLevel);
+
+                var c = {
+                    startP: {
+                        x: triangleXPoint,
+                        y: mode.yLevel
+                    },
+                    endP: {
+                        x: leftPointPos.x,
+                        y: mode.yLevel - (circleDiameter / 2)
+                    },
+                    
+                    startControlP: {
+                        x: triangleXPoint + 100,
+                        y: mode.yLevel
+                    },
+                    endControlP: {
+                        x: leftPointPos.x - 100, // fiddle here
+                        y: mode.yLevel - (circleDiameter / 2)
+                    }
+                };
+
+                 var c2 = {
+                    startP: {
+                        x: triangleXPoint,
+                        y: mode.yLevel
+                    },
+                    endP: {
+                        x: leftPointPos.x,
+                        y: mode.yLevel + (circleDiameter / 2)
+                    },
+                    
+                    startControlP: {
+                        x: triangleXPoint + 100,
+                        y: mode.yLevel
+                    },
+                    endControlP: {
+                        x: leftPointPos.x - 100, // fiddle here
+                        y: mode.yLevel + (circleDiameter / 2)
+                    }
+                };
+
+
+                p.fill(0);
+                p.beginShape();
+
+                p.vertex(c.startP.x, c.startP.y);
+                p.bezierVertex(c.startControlP.x, c.startControlP.y,
+                    c.endControlP.x, c.endControlP.y,
+                    c.endP.x, c.endP.y);
+
+                p.vertex(c2.endP.x, c2.endP.y);
+
+                p.bezierVertex(c2.endControlP.x, c2.endControlP.y,
+                    c2.startControlP.x, c2.startControlP.y,
+                    c2.startP.x, c2.startP.y);
+
+                p.endShape();
+
+                // Draw guiding lines
+                p.stroke(255, 102, 0);
+                p.line(c.startP.x, c.startP.y, c.startControlP.x, c.startControlP.y);
+                p.line(c.endP.x, c.endP.y, c.endControlP.x, c.endControlP.y);
+                p.stroke(0, 0, 0);
+
+                p.stroke(255, 102, 0);
+                p.line(c2.startP.x, c2.startP.y, c2.startControlP.x, c2.startControlP.y);
+                p.line(c2.endP.x, c2.endP.y, c2.endControlP.x, c2.endControlP.y);
+                p.stroke(0, 0, 0);
+
+                var dotRadius = 20;
+                p.push();
+                p.fill(0,0,255);
+                p.ellipse(c.startP.x, c.startP.y, dotRadius, dotRadius);
+                p.pop();
 
             }
         }
