@@ -11,6 +11,7 @@ var finalObject = function(p) {
     pointClass(p);
     view(p);
     inputs(p);
+    pointExtensionFunctions(p);
 };
 
 var myp5 = new p5(finalObject);
