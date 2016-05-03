@@ -68,107 +68,86 @@ var view = function(p) {
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
-                var leftPointPos = {
+                var circleCenter = {
                     x: mode.magnitude * p.windowWidth,
                     y: mode.yLevel
                 };
 
-                p.noFill();
-                p.stroke(255, 102, 0);
-
-                // p.beginShape();
-                // p.vertex(leftPointPos.x, leftPointPos.y);
-
-                // p.bezierVertex(80, 0, 80, 75, 30, 75);
-                // p.bezierVertex(50, 80, 60, 25, 30, 20);
-                // p.endShape();
-
                 var triangleXPoint = mode.magnitude * p.windowWidth / 2;
                 var circleDiameter = mode.magnitude * p.windowHeight / 3;
 
-                // p.line(leftPointPos.x, mode.yLevel - (circleDiameter / 2), triangleXPoint, mode.yLevel);
-                // p.line(leftPointPos.x, mode.yLevel + (circleDiameter / 2), triangleXPoint, mode.yLevel);
+                var startPoint = {
+                    x: triangleXPoint,
+                    y: mode.yLevel
+                };
+                var topEndPoint = {
+                    x: circleCenter.x,
+                    y: mode.yLevel - (circleDiameter / 2)
+                };
+                var bottomEndPoint = {
+                    x: circleCenter.x,
+                    y: mode.yLevel + (circleDiameter / 2)
+                };
 
-                var c = {
-                    startP: {
-                        x: triangleXPoint,
-                        y: mode.yLevel
-                    },
-                    endP: {
-                        x: leftPointPos.x,
-                        y: mode.yLevel - (circleDiameter / 2)
-                    },
-                    
+                var top = {
                     startControlP: {
                         x: triangleXPoint + 100,
                         y: mode.yLevel
                     },
                     endControlP: {
-                        x: leftPointPos.x - 100, // fiddle here
+                        x: circleCenter.x - 100, // fiddle here
                         y: mode.yLevel - (circleDiameter / 2)
                     }
                 };
 
-                 var c2 = {
-                    startP: {
-                        x: triangleXPoint,
-                        y: mode.yLevel
-                    },
-                    endP: {
-                        x: leftPointPos.x,
-                        y: mode.yLevel + (circleDiameter / 2)
-                    },
-                    
+                var bottom = {
                     startControlP: {
                         x: triangleXPoint + 100,
                         y: mode.yLevel
                     },
                     endControlP: {
-                        x: leftPointPos.x - 100, // fiddle here
+                        x: circleCenter.x - 100, // fiddle here
                         y: mode.yLevel + (circleDiameter / 2)
                     }
                 };
 
+                p.noStroke();
+                p.fill(mode.color);
 
-                p.fill(0);
                 p.beginShape();
 
-                p.vertex(c.startP.x, c.startP.y);
-                p.bezierVertex(c.startControlP.x, c.startControlP.y,
-                    c.endControlP.x, c.endControlP.y,
-                    c.endP.x, c.endP.y);
+                // Vertex at triangle tip
+                p.vertex(startPoint.x, startPoint.y);
 
-                p.vertex(c2.endP.x, c2.endP.y);
+                // Draw top bezier
+                p.bezierVertexPoint(top.startControlP,top.endControlP, topEndPoint);
+                // Vertex at bottom of circle
+                p.vertexPoint(bottomEndPoint);
 
-                p.bezierVertex(c2.endControlP.x, c2.endControlP.y,
-                    c2.startControlP.x, c2.startControlP.y,
-                    c2.startP.x, c2.startP.y);
+                // Draw bottom bezier
+                p.bezierVertexPoint(bottom.endControlP,
+                    bottom.startControlP,
+                    startPoint);
 
                 p.endShape();
 
                 // Draw guiding lines
                 p.stroke(255, 102, 0);
-                p.line(c.startP.x, c.startP.y, c.startControlP.x, c.startControlP.y);
-                p.line(c.endP.x, c.endP.y, c.endControlP.x, c.endControlP.y);
-                p.stroke(0, 0, 0);
-
-                p.stroke(255, 102, 0);
-                p.line(c2.startP.x, c2.startP.y, c2.startControlP.x, c2.startControlP.y);
-                p.line(c2.endP.x, c2.endP.y, c2.endControlP.x, c2.endControlP.y);
+                p.line(startPoint.x, startPoint.y, top.startControlP.x, top.startControlP.y);
+                p.line(topEndPoint.x, topEndPoint.y, top.endControlP.x, top.endControlP.y);
+                p.line(startPoint.x, startPoint.y, bottom.startControlP.x, bottom.startControlP.y);
+                p.line(bottomEndPoint.x, bottomEndPoint.y, bottom.endControlP.x, bottom.endControlP.y);
                 p.stroke(0, 0, 0);
 
                 var dotRadius = 20;
                 p.push();
-                p.fill(0,0,255);
-                p.ellipse(c.startP.x, c.startP.y, dotRadius, dotRadius);
+                p.fill(0, 0, 255);
+                p.ellipse(circleCenter.x, circleCenter.y, dotRadius, dotRadius);
                 p.pop();
-
             }
         }
         p.pop();
     };
-
-
 
 
 };
