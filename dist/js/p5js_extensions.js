@@ -1,0 +1,1 @@
+var p5jsExtensions=function(e){e.bezierVertexPoint=function(i,n,t){e.bezierVertex(i.x,i.y,n.x,n.y,t.x,t.y)},e.vertexPoint=function(i){e.vertex(i.x,i.y)},e.drawCircle=function(i,n,t){e.push(),e.fill(i),e.ellipse(n.x,n.y,t,t),e.pop()}};

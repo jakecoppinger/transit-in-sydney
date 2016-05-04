@@ -1,1 +1,1 @@
-var finalObject=function(n){main(n),pointClass(n),view(n),inputs(n),pointExtensionFunctions(n)},myp5=new p5(finalObject);
+var finalObject=function(n){main(n),pointClass(n),view(n),inputs(n),p5jsExtensions(n),dataProcessing(n)},myp5=new p5(finalObject);
