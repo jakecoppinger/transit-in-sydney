@@ -34,9 +34,11 @@ var dataProcessing = function(p) {
             "Walked only"
         ];
 
-        var absoluteSuburbs = {};
-        var percentageSuburbs = {};
-        var suburbsDistance = {};
+        p.absoluteSuburbs = {};
+        p.percentageSuburbs = {};
+        p.suburbsDistance = {};
+
+        var distanceList = [];
 
         var absoluteYearKey = "2011";
         var percentageYearKey = absoluteYearKey + "%";
@@ -44,26 +46,29 @@ var dataProcessing = function(p) {
         for (var suburb in data) {
             if (data.hasOwnProperty(suburb)) {
                 if (chosenSuburbs.indexOf(suburb) != -1) {
-                    absoluteSuburbs[suburb] = {};
-                    percentageSuburbs[suburb] = {};
-                    suburbsDistance[suburb] = {};
+                    p.absoluteSuburbs[suburb] = {};
+                    p.percentageSuburbs[suburb] = {};
+                    p.suburbsDistance[suburb] = {};
 
                     for (var i = 0; i < chosenModes.length; i++) {
                         mode = chosenModes[i];
                         var percentage = data[suburb][mode][percentageYearKey];
                         var absolute = data[suburb][mode][absoluteYearKey];
-                        var distance = data[suburb][mode][distance];
+                        var distance = parseFloat(data[suburb]["Distance from CBD"]);
 
-                        absoluteSuburbs[suburb][mode] = absolute;
-                        percentageSuburbs[suburb][mode] = percentage;
-                        suburbsDistance[suburb] = distance;
+                        p.absoluteSuburbs[suburb][mode] = absolute;
+                        p.percentageSuburbs[suburb][mode] = percentage;
+                        p.suburbsDistance[suburb] = distance;
+                        distanceList.push(distance);
                     }
 
                 }
 
             }
         }
-        console.log(absoluteSuburbs);
+
+        p.maxDistance = Math.max.apply(Math, distanceList);
+        p.dataLoaded = 1;
         console.log("We have our data!");
     };
 };

@@ -6,8 +6,6 @@ jake@jakecoppinger.com
 
 */
 
-
-
 var main = function(p) {
     var purple;
     var blue;
@@ -16,6 +14,13 @@ var main = function(p) {
     var background;
     var lastMouseY;
     var lastMouseX;
+
+    // Defining "global" variables.
+    // These are populated in p.parseTransitData()
+    p.absoluteSuburbs;
+    p.percentageSuburb;
+    p.suburbsDistance;
+    p.maxDistance;
 
     p.setup = function() {
         p.createCanvas(p.windowWidth, p.windowHeight);
@@ -41,12 +46,12 @@ var main = function(p) {
 
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
-        
+
     };
 
     p.draw = function() {
         // Only draw to screen when mouse is moving
-        if (p.mouseX != lastMouseX || p.mouseY != lastMouseY) {
+        if (p.mouseX != lastMouseX || p.mouseY != lastMouseY && p.dataLoaded == 1) {
             console.log("Drawing!");
 
             var mousePos = new p.Point({
