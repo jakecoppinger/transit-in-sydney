@@ -27,10 +27,7 @@ var main = function(p) {
         orange = p.color(230, 73, 35);
         background = 255;
 
-
-
         // Send off AJAX request to get the sydney transport data
-
         var dataUrl = "/data/city_of_sydney_transport_data_2011.json";
         var xmlhttp = new XMLHttpRequest();
         var url = dataUrl;
@@ -39,7 +36,6 @@ var main = function(p) {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var data = JSON.parse(xmlhttp.responseText);
                 p.parseTransitData(data);
-                console.log(data);
             }
         };
 
