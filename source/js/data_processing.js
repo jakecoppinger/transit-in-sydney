@@ -71,4 +71,15 @@ var dataProcessing = function(p) {
         p.dataLoaded = 1;
         console.log("We have our data!");
     };
+
+
+    p.calculateMagnitudeForMode = function(modeStr) {
+
+
+        var currentMouseDistanceKM = p.mouseX * (p.maxDistance / p.windowWidth);
+        console.log(currentMouseDistanceKM);
+
+
+
+    };
 };

@@ -52,12 +52,15 @@ var main = function(p) {
     p.draw = function() {
         // Only draw to screen when mouse is moving
         if (p.mouseX != lastMouseX || p.mouseY != lastMouseY && p.dataLoaded == 1) {
-            console.log("Drawing!");
+            //console.log("Drawing!");
 
             var mousePos = new p.Point({
                 x: p.mouseX,
                 y: p.mouseY
             });
+
+            var yellowMagnitude = p.calculateMagnitudeForMode("Walked only");
+
 
             var windowCorners = p.windowCorners();
 
