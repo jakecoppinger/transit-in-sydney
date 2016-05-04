@@ -1,1 +1,0 @@
-var pointExtensionFunctions=function(e){e.bezierVertexPoint=function(n,t,i){e.bezierVertex(n.x,n.y,t.x,t.y,i.x,i.y)},e.vertexPoint=function(n){e.vertex(n.x,n.y)}};
