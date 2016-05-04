@@ -12,6 +12,7 @@ var finalObject = function(p) {
     view(p);
     inputs(p);
     p5jsExtensions(p);
+    dataProcessing(p);
 };
 
 var myp5 = new p5(finalObject);

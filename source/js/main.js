@@ -28,6 +28,9 @@ var main = function(p) {
         background = 255;
 
 
+
+        // Send off AJAX request to get the sydney transport data
+
         var dataUrl = "/data/city_of_sydney_transport_data_2011.json";
         var xmlhttp = new XMLHttpRequest();
         var url = dataUrl;
@@ -35,16 +38,14 @@ var main = function(p) {
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var data = JSON.parse(xmlhttp.responseText);
+                p.parseTransitData(data);
                 console.log(data);
             }
         };
 
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
-
-
-
-
+        
     };
 
     p.draw = function() {
