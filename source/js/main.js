@@ -17,10 +17,10 @@ var main = function(p) {
 
     // Defining "global" variables.
     // These are populated in p.parseTransitData()
-    p.absoluteSuburbs;
-    p.percentageSuburb;
-    p.suburbsDistance;
-    p.maxDistance;
+    p.absoluteSuburbs = {};
+    p.percentageSuburb = {};
+    p.suburbsDistance = {};
+    p.maxDistance = {};
 
     p.setup = function() {
         p.createCanvas(p.windowWidth, p.windowHeight);
