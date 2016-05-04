@@ -6,6 +6,8 @@ jake@jakecoppinger.com
 
 */
 
+
+
 var main = function(p) {
     var purple;
     var blue;
@@ -24,6 +26,25 @@ var main = function(p) {
         pink = p.color(204, 25, 119);
         orange = p.color(230, 73, 35);
         background = 255;
+
+
+        var dataUrl = "/data/city_of_sydney_transport_data_2011.json";
+        var xmlhttp = new XMLHttpRequest();
+        var url = dataUrl;
+
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = JSON.parse(xmlhttp.responseText);
+                console.log(data);
+            }
+        };
+
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+
+
+
+
     };
 
     p.draw = function() {
