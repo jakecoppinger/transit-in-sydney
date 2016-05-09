@@ -1,3 +1,11 @@
+/*
+
+Jake Coppinger, 2016
+jakecoppinger.com
+jake@jakecoppinger.com
+
+*/
+
 var dataProcessing = function(p) {
     p.parseTransitData = function(data) {
         var chosenSuburbs = ["Sydney",
@@ -38,6 +46,8 @@ var dataProcessing = function(p) {
         p.percentageSuburbs = {};
         p.suburbsDistance = {};
 
+        p.suburbsDistancePoints = [];
+
         var distanceList = [];
 
         var absoluteYearKey = "2011";
@@ -46,19 +56,31 @@ var dataProcessing = function(p) {
         for (var suburb in data) {
             if (data.hasOwnProperty(suburb)) {
                 if (chosenSuburbs.indexOf(suburb) != -1) {
+
+                    var distance = parseFloat(data[suburb]["Distance from CBD"]);
+
                     p.absoluteSuburbs[suburb] = {};
                     p.percentageSuburbs[suburb] = {};
                     p.suburbsDistance[suburb] = {};
+
+                    p.suburbsDistancePoints.push({
+                        label: suburb,
+                        value: distance
+                    });
+
+
 
                     for (var i = 0; i < chosenModes.length; i++) {
                         mode = chosenModes[i];
                         var percentage = data[suburb][mode][percentageYearKey];
                         var absolute = data[suburb][mode][absoluteYearKey];
-                        var distance = parseFloat(data[suburb]["Distance from CBD"]);
+
 
                         p.absoluteSuburbs[suburb][mode] = absolute;
                         p.percentageSuburbs[suburb][mode] = percentage;
                         p.suburbsDistance[suburb] = distance;
+
+
                         distanceList.push(distance);
                     }
 
@@ -67,19 +89,68 @@ var dataProcessing = function(p) {
             }
         }
 
+        /// We'll need to sort them here
+
+        console.log(p.absoluteSuburbs);
+
+        console.log(p.percentageSuburbs);
+        console.log(p.suburbsDistancePoints);
+
         p.maxDistance = Math.max.apply(Math, distanceList);
         p.dataLoaded = 1;
+
+
+
+
         console.log("We have our data!");
     };
-
 
     p.calculateMagnitudeForMode = function(modeStr) {
 
 
         var currentMouseDistanceKM = p.mouseX * (p.maxDistance / p.windowWidth);
+        // console.log(currentMouseDistanceKM);
+
         console.log(currentMouseDistanceKM);
 
+    };
 
+
+    p.nearestPointsToValue = function(setpoint, data) {
+        var belowDifference = 9999999;
+        var belowName;
+
+        var aboveDifference = 9999999;
+        var aboveName;
+
+        for (var i = 0; i < data.length; i++) {
+            var fixedValue = data[i].value;
+            var fixedLabel = data[i].label;
+
+            // Above value
+            if (fixedValue - setpoint >= 0 && fixedValue - setpoint <= aboveDifference) {
+                aboveDifference = fixedValue - setpoint;
+                aboveName = fixedLabel;
+            }
+
+
+            // Below value 
+            if (setpoint - fixedValue > 0 && setpoint - fixedValue < belowDifference) {
+                belowDifference = setpoint - fixedValue;
+                belowName = fixedLabel;
+            }
+        }
+
+        return {
+            above: {
+                label: aboveName,
+                value: aboveDifference
+            },
+            below: {
+                label: belowName,
+                value: belowDifference
+            }
+        };
 
     };
 };

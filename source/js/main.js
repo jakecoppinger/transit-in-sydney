@@ -47,6 +47,21 @@ var main = function(p) {
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
 
+        var nearestPoints = p.nearestPointsToValue(1.4, [{
+            label: "One",
+            value: 1
+        }, {
+            label: "Two",
+            value: 2
+        }, {
+            label: "Three",
+            value: 3
+        }]);
+
+        // p.prettyPrint(nearestPoints);
+
+
+
     };
 
     p.draw = function() {
@@ -119,7 +134,9 @@ var main = function(p) {
 
     p.mouseMoved = function() {
 
+    };
 
-
+    p.prettyPrint = function(data) {
+        console.log(JSON.stringify(data, null, 2));
     };
 };
