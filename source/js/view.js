@@ -33,9 +33,7 @@ var view = function(p) {
         p.fill(0);
         p.textSize(p.windowHeight / 40);
         var debugTextIndent = p.windowHeight / 20;
-        var debugString = "";
-        debugString += "fps: " + p.frameRate() + "\n";
-        p.text(debugString, debugTextIndent, debugTextIndent);
+        p.text(s, debugTextIndent, debugTextIndent);
         p.pop();
     };
 

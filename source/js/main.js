@@ -74,7 +74,7 @@ var main = function(p) {
                 y: p.mouseY
             });
 
-            var yellowMagnitude = p.calculateMagnitudeForMode("Walked only");
+            // var yellowMagnitude = p.calculateMagnitudeForMode("Walked only");
 
 
             var windowCorners = p.windowCorners();
@@ -119,9 +119,20 @@ var main = function(p) {
 
             // Draw triangles
             p.drawTransitTriangles(modes);
-            p.drawDebugText(modes);
             p.drawTransitCircles(modes);
             p.drawTransitArcs(modes);
+
+
+
+            var currentDistance = p.currentMouseDistanceKM();
+            var nearestPoints = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
+
+            var debugString = "";
+            debugString += "fps: " + p.frameRate() + "\n";
+            debugString += p.prettyStr(nearestPoints);
+            p.drawDebugText(debugString);
+
+
         }
         lastMouseY = p.mouseY;
         lastMouseX = p.mouseX;
@@ -136,7 +147,7 @@ var main = function(p) {
 
     };
 
-    p.prettyPrint = function(data) {
-        console.log(JSON.stringify(data, null, 2));
+    p.prettyStr = function(data) {
+        return JSON.stringify(data, null, 2);
     };
 };

@@ -78,9 +78,11 @@ var dataProcessing = function(p) {
             }
         }
 
-        var suburbsDistance = p.generateSuburbDistances(data, chosenSuburbs);
 
-        console.log(suburbsDistance);
+        p.suburbsDistance = p.generateSuburbDistances(data, chosenSuburbs);
+
+
+        console.log(p.suburbsDistance);
 
         p.maxDistance = Math.max.apply(Math, distanceList);
         p.dataLoaded = 1;
@@ -106,16 +108,14 @@ var dataProcessing = function(p) {
         return suburbDistances;
     };
 
-    p.calculateMagnitudeForMode = function(modeStr) {
-
-
-        var currentMouseDistanceKM = p.mouseX * (p.maxDistance / p.windowWidth);
-        // console.log(currentMouseDistanceKM);
-
-        // console.log(currentMouseDistanceKM);
-
+    p.currentMouseDistanceKM = function() {
+        return p.mouseX * (p.maxDistance / p.windowWidth);
     };
 
+
+    p.prettyPrint = function(data) {
+        console.log(JSON.stringify(data, null, 2));
+    };
 
     p.nearestPointsToValue = function(setpoint, data) {
         var belowDifference = 9999999;
@@ -125,18 +125,20 @@ var dataProcessing = function(p) {
         var aboveName;
 
         for (var i = 0; i < data.length; i++) {
-            var fixedValue = data[i].value;
-            var fixedLabel = data[i].label;
+            var fixedValue = parseFloat((data[i])[1]);
+            var fixedLabel = (data[i])[0];
+
+            var aboveSetpoint = fixedValue - setpoint >= 0;
 
             // Above value
-            if (fixedValue - setpoint >= 0 && fixedValue - setpoint <= aboveDifference) {
+            if (fixedValue - setpoint > 0 && fixedValue - setpoint < aboveDifference) {
                 aboveDifference = fixedValue - setpoint;
                 aboveName = fixedLabel;
             }
 
 
             // Below value 
-            if (setpoint - fixedValue > 0 && setpoint - fixedValue < belowDifference) {
+            if (setpoint - fixedValue >= 0 && setpoint - fixedValue <= belowDifference) {
                 belowDifference = setpoint - fixedValue;
                 belowName = fixedLabel;
             }
