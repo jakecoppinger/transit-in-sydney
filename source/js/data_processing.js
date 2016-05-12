@@ -42,67 +42,68 @@ var dataProcessing = function(p) {
             "Walked only"
         ];
 
-        p.absoluteSuburbs = {};
-        p.percentageSuburbs = {};
-        p.suburbsDistance = {};
-
-        p.suburbsDistancePoints = [];
-
-        var distanceList = [];
+        var absoluteSuburbs = {};
+        var percentageSuburbs = {};
+        var suburbsDistancePoints = [];
 
         var absoluteYearKey = "2011";
         var percentageYearKey = absoluteYearKey + "%";
 
+        var distanceList = [];
         for (var suburb in data) {
             if (data.hasOwnProperty(suburb)) {
                 if (chosenSuburbs.indexOf(suburb) != -1) {
 
                     var distance = parseFloat(data[suburb]["Distance from CBD"]);
 
-                    p.absoluteSuburbs[suburb] = {};
-                    p.percentageSuburbs[suburb] = {};
-                    p.suburbsDistance[suburb] = {};
+                    absoluteSuburbs[suburb] = {};
+                    percentageSuburbs[suburb] = {};
 
-                    p.suburbsDistancePoints.push({
-                        label: suburb,
-                        value: distance
-                    });
+                    // p.suburbsDistancePoints.push({
+                    //     label: suburb,
+                    //     value: distance
+                    // });
 
-
+                    distanceList.push(distance);
 
                     for (var i = 0; i < chosenModes.length; i++) {
                         mode = chosenModes[i];
                         var percentage = data[suburb][mode][percentageYearKey];
                         var absolute = data[suburb][mode][absoluteYearKey];
 
-
-                        p.absoluteSuburbs[suburb][mode] = absolute;
-                        p.percentageSuburbs[suburb][mode] = percentage;
-                        p.suburbsDistance[suburb] = distance;
-
-
-                        distanceList.push(distance);
+                        absoluteSuburbs[suburb][mode] = absolute;
+                        percentageSuburbs[suburb][mode] = percentage;
                     }
-
                 }
-
             }
         }
 
-        /// We'll need to sort them here
+        var suburbsDistance = p.generateSuburbDistances(data, chosenSuburbs);
 
-        console.log(p.absoluteSuburbs);
-
-        console.log(p.percentageSuburbs);
-        console.log(p.suburbsDistancePoints);
+        console.log(suburbsDistance);
 
         p.maxDistance = Math.max.apply(Math, distanceList);
         p.dataLoaded = 1;
 
-
-
-
         console.log("We have our data!");
+    };
+
+    p.generateSuburbDistances = function(data, chosenSuburbs) {
+        var suburbDistances = [];
+        for (var suburb in data) {
+            if (data.hasOwnProperty(suburb)) {
+                if (chosenSuburbs.indexOf(suburb) != -1) {
+                    var distance = parseFloat(data[suburb]["Distance from CBD"]);
+                    suburbDistances.push([suburb, distance]);
+                }
+            }
+        }
+
+        suburbDistances.sort(function(a, b) {
+            return a[1] - b[1];
+        });
+
+        return suburbDistances;
     };
 
     p.calculateMagnitudeForMode = function(modeStr) {
@@ -111,7 +112,7 @@ var dataProcessing = function(p) {
         var currentMouseDistanceKM = p.mouseX * (p.maxDistance / p.windowWidth);
         // console.log(currentMouseDistanceKM);
 
-        console.log(currentMouseDistanceKM);
+        // console.log(currentMouseDistanceKM);
 
     };
 
