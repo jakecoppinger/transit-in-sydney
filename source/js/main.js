@@ -123,9 +123,9 @@ var main = function(p) {
             p.drawTransitArcs(modes);
 
 
-
             var currentDistance = p.currentMouseDistanceKM();
             var nearestPoints = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
+            p.drawCurrentSuburbs(nearestPoints);
 
             var debugString = "";
             debugString += "fps: " + p.frameRate() + "\n";

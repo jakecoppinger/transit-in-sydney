@@ -59,11 +59,6 @@ var dataProcessing = function(p) {
                     absoluteSuburbs[suburb] = {};
                     percentageSuburbs[suburb] = {};
 
-                    // p.suburbsDistancePoints.push({
-                    //     label: suburb,
-                    //     value: distance
-                    // });
-
                     distanceList.push(distance);
 
                     for (var i = 0; i < chosenModes.length; i++) {
@@ -78,11 +73,7 @@ var dataProcessing = function(p) {
             }
         }
 
-
         p.suburbsDistance = p.generateSuburbDistances(data, chosenSuburbs);
-
-
-        console.log(p.suburbsDistance);
 
         p.maxDistance = Math.max.apply(Math, distanceList);
         p.dataLoaded = 1;
@@ -146,12 +137,12 @@ var dataProcessing = function(p) {
 
         return {
             above: {
-                label: aboveName,
-                value: aboveDifference
+                suburb: aboveName,
+                kmFromSuburb: aboveDifference
             },
             below: {
-                label: belowName,
-                value: belowDifference
+                suburb: belowName,
+                kmFromSuburb: belowDifference
             }
         };
 

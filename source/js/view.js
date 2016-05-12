@@ -7,6 +7,36 @@ jake@jakecoppinger.com
 */
 
 var view = function(p) {
+
+    p.drawCurrentSuburbs = function(nearestPoints) {
+
+
+        if (nearestPoints.above.suburb) {
+            p.push();
+            p.fill(0);
+            var theValue;
+            var theSuburb;
+
+            if (parseFloat(nearestPoints.above.kmFromSuburb) <= parseFloat(nearestPoints.below.kmFromSuburb)) {
+                theValue = nearestPoints.above.kmFromSuburb;
+                theSuburb = nearestPoints.above.suburb;
+            } else {
+                theValue = nearestPoints.below.kmFromSuburb;
+                theSuburb = nearestPoints.below.suburb;
+            }
+
+            var s = theSuburb;
+            p.textSize(p.windowHeight / 9);
+            var textIndent = p.windowHeight / 3;
+
+            p.text(s, textIndent, textIndent);
+
+            p.pop();
+        }
+
+
+    };
+
     p.drawTransitTriangle = function(color, tip) {
         p.push();
         p.fill(color);
