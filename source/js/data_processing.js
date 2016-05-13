@@ -28,7 +28,7 @@ var dataProcessing = function(p) {
         };
 
         var modes = {
-            "Walking": {
+            "Walked only": {
                 color: p.yellow,
                 magnitude: mouseDiagonals.posSlope1,
                 yLevel: p.windowHeight * (1 / 5)
@@ -43,22 +43,32 @@ var dataProcessing = function(p) {
                 magnitude: mouseDiagonals.negSlope1,
                 yLevel: p.windowHeight * (3 / 5)
             },
-            "Car": {
+            "Car - as driver": {
                 color: p.pink,
                 magnitude: mouseDiagonals.negSlope2,
                 yLevel: p.windowHeight * (4 / 5)
             }
         };
 
+        for (var mode in modes) {
+            if (modes.hasOwnProperty(mode)) {
 
-        modes.Walking.magnitude = interpolationRatio;
-        modes.Bus.magnitude = 1 - interpolationRatio;
+                var belowPercentage = 1 - interpolationRatio;
+                var abovePercentage = interpolationRatio;
 
+                var belowSuburb = nearestPointsToValue.below.suburb;
+                var aboveSuburb = nearestPointsToValue.above.suburb;
 
+                var belowModePercentage = p.percentageSuburbs[belowSuburb][mode];
+                var aboveModePercetage = p.percentageSuburbs[aboveSuburb][mode];
 
-        //console.log(p.percentageSuburbs)
-        // console.log(nps.below.suburb + ": " + belowSuburbWeighting + ", " + nps.above.suburb + ": " + aboveSuburbWeighting);
+                // Here's the magic!
+                var magnitude = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercetage) / 100;
 
+                modes[mode].magnitude = magnitude;
+                console.log(magnitude);
+            }
+        }
 
         return modes;
     };
