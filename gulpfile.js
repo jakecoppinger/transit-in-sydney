@@ -22,16 +22,16 @@ var runSequence = require('run-sequence');
 var size = require('gulp-size');
 var merge = require('merge-stream');
 var run = require('gulp-run');
+var jsonminify = require('gulp-jsonminify');
 
 gulp.task('js', function() {
-    var outputPath = 'js';
     return gulp.src([
             'source/js/**/*.js'
         ])
         .pipe(uglify({
             preserveComments: false
         }))
-        .pipe(gulp.dest('dist/' + outputPath))
+        .pipe(gulp.dest('dist/js'))
 });
 
 // Lint JavaScript
@@ -46,6 +46,16 @@ gulp.task('lint', function() {
         // .pipe(jshint.extract())
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'));
+});
+
+// Copy and optimise data
+gulp.task('data', function() {
+    var data = gulp.src([
+        'source/data/**/*.json'
+    ])
+    .pipe(jsonminify())
+    .pipe(gulp.dest('dist/data'));
+
 });
 
 gulp.task('serve', ['lint'], function() {
@@ -80,6 +90,9 @@ gulp.task('copy', function() {
         'js/**/*'
     ]).pipe(gulp.dest('dist/js'));
 
+
+
+
     return merge(html, js)
         .pipe(size({
             title: 'copy'
@@ -91,7 +104,7 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('build', ['clean'], function(cb) {
     runSequence(
-        ['copy', 'js'],
+        ['copy', 'js','data'],
         cb);
 });
 
