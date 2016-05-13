@@ -14,38 +14,39 @@ var dataProcessing = function(p) {
             x: p.mouseX,
             y: p.mouseY
         });
-        var windowCorners = p.windowCorners();
 
-        var mouseDiagonals = {
-            "posSlope1": p.percentageToWindowCorner(mousePos, windowCorners.bottomLeft,
-                windowCorners.topRight),
-            "posSlope2": p.percentageToWindowCorner(mousePos, windowCorners.topRight,
-                windowCorners.bottomLeft),
-            "negSlope1": p.percentageToWindowCorner(mousePos, windowCorners.topLeft,
-                windowCorners.bottomRight),
-            "negSlope2": p.percentageToWindowCorner(mousePos, windowCorners.bottomRight,
-                windowCorners.topLeft)
-        };
+        // var windowCorners = p.windowCorners();
+
+        // var mouseDiagonals = {
+        //     "posSlope1": p.percentageToWindowCorner(mousePos, windowCorners.bottomLeft,
+        //         windowCorners.topRight),
+        //     "posSlope2": p.percentageToWindowCorner(mousePos, windowCorners.topRight,
+        //         windowCorners.bottomLeft),
+        //     "negSlope1": p.percentageToWindowCorner(mousePos, windowCorners.topLeft,
+        //         windowCorners.bottomRight),
+        //     "negSlope2": p.percentageToWindowCorner(mousePos, windowCorners.bottomRight,
+        //         windowCorners.topLeft)
+        // };
 
         var modes = {
             "Walked only": {
                 color: p.yellow,
-                magnitude: mouseDiagonals.posSlope1,
+                // magnitude: mouseDiagonals.posSlope1,
                 yLevel: p.windowHeight * (1 / 5)
             },
             "Bus": {
                 color: p.green, //orange,
-                magnitude: mouseDiagonals.posSlope2,
+                //magnitude: mouseDiagonals.posSlope2,
                 yLevel: p.windowHeight * (2 / 5)
             },
             "Train": {
                 color: p.blue,
-                magnitude: mouseDiagonals.negSlope1,
+                //magnitude: mouseDiagonals.negSlope1,
                 yLevel: p.windowHeight * (3 / 5)
             },
             "Car - as driver": {
                 color: p.pink,
-                magnitude: mouseDiagonals.negSlope2,
+                //magnitude: mouseDiagonals.negSlope2,
                 yLevel: p.windowHeight * (4 / 5)
             }
         };
@@ -59,14 +60,13 @@ var dataProcessing = function(p) {
                 var belowSuburb = nearestPointsToValue.below.suburb;
                 var aboveSuburb = nearestPointsToValue.above.suburb;
 
-                var belowModePercentage = p.percentageSuburbs[belowSuburb][mode];
-                var aboveModePercetage = p.percentageSuburbs[aboveSuburb][mode];
+                var belowModePercentage = p.suburbModePercentages[belowSuburb][mode];
+                var aboveModePercetage = p.suburbModePercentages[aboveSuburb][mode];
 
                 // Here's the magic!
-                var magnitude = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercetage) / 100;
+                var magnitude = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercetage);
 
                 modes[mode].magnitude = magnitude;
-                console.log(magnitude);
             }
         }
 
@@ -108,10 +108,12 @@ var dataProcessing = function(p) {
             "Walked only"
         ];
 
-        p.absoluteSuburbs = {};
-        p.percentageSuburbs = {};
-        var suburbsDistancePoints = [];
+        p.suburbModeCounts = {};
+        p.suburbModePercentages = {};
+        p.maxSuburbPercentage = 0;
+        p.maxSuburbCount = 0;
 
+        var suburbsDistancePoints = [];
         var absoluteYearKey = "2011";
         var percentageYearKey = absoluteYearKey + "%";
 
@@ -122,22 +124,32 @@ var dataProcessing = function(p) {
 
                     var distance = parseFloat(data[suburb]["Distance from CBD"]);
 
-                    p.absoluteSuburbs[suburb] = {};
-                    p.percentageSuburbs[suburb] = {};
+                    p.suburbModeCounts[suburb] = {};
+                    p.suburbModePercentages[suburb] = {};
 
                     distanceList.push(distance);
 
                     for (var i = 0; i < chosenModes.length; i++) {
                         mode = chosenModes[i];
-                        var percentage = data[suburb][mode][percentageYearKey];
-                        var absolute = data[suburb][mode][absoluteYearKey];
+                        var percentage = parseFloat(data[suburb][mode][percentageYearKey]) / 100;
+                        var absolute = parseFloat(data[suburb][mode][absoluteYearKey]) / 100;
 
-                        p.absoluteSuburbs[suburb][mode] = absolute;
-                        p.percentageSuburbs[suburb][mode] = percentage;
+                        p.suburbModeCounts[suburb][mode] = absolute;
+                        p.suburbModePercentages[suburb][mode] = percentage;
+
+                        if (percentage > p.maxSuburbPercentage) {
+                            p.maxSuburbPercentage = percentage;
+                        }
+                        if (absolute > p.maxSuburbCount) {
+                            p.maxSuburbCount = absolute;
+                        }
+
                     }
                 }
             }
         }
+
+        console.log(p.maxSuburbPercentage);
 
         p.suburbsDistance = p.generateSuburbDistances(data, chosenSuburbs);
 

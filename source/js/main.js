@@ -85,6 +85,7 @@ var main = function(p) {
             p.drawTransitTriangles(modes);
             p.drawTransitCircles(modes);
             p.drawTransitArcs(modes);
+            p.drawTransitFigures(modes);
 
             lastMouseY = p.mouseY;
             lastMouseX = p.mouseX;

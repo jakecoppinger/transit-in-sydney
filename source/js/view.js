@@ -48,7 +48,9 @@ var view = function(p) {
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
-                var triangleXPoint = mode.magnitude * p.windowWidth / 2;
+                // (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth
+
+                var triangleXPoint = (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth / 5;
                 p.push();
                 p.fill(mode.color);
                 p.triangle(0, 0, 0, p.windowHeight, triangleXPoint, mode.yLevel);
@@ -72,15 +74,38 @@ var view = function(p) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
                 var circlePosition = {
-                    x: mode.magnitude * p.windowWidth,
+                    x: (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth,
                     y: mode.yLevel
                 };
-                var circleDiameter = mode.magnitude * p.windowHeight / 3;
+                var circleDiameter = mode.magnitude * p.windowHeight;
                 p.drawCircle(mode.color, circlePosition, circleDiameter);
             }
         }
         p.pop();
     };
+
+    p.drawTransitFigures = function(modes) {
+        p.push();
+        p.fill(0);
+        for (var modeName in modes) {
+            if (modes.hasOwnProperty(modeName)) {
+
+                var mode = modes[modeName];
+                var textPos = {
+                    x: (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth,
+                    y: mode.yLevel
+                };
+
+                var s = (Math.round(mode.magnitude * 100 * 10) / 10).toString() + "%";
+                p.textSize(p.windowHeight / 19);
+                var textIndent = p.windowHeight / 3;
+                p.text(s, textPos.x, textPos.y);
+            }
+        }
+        p.pop();
+    };
+
+
 
     p.drawTransitArcs = function(modes) {
         p.push();
@@ -92,12 +117,12 @@ var view = function(p) {
 
                 var mode = modes[modeName];
                 var circleCenter = {
-                    x: mode.magnitude * p.windowWidth,
+                    x: (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth,
                     y: mode.yLevel
                 };
 
-                var triangleXPoint = mode.magnitude * p.windowWidth / 2;
-                var circleDiameter = mode.magnitude * p.windowHeight / 3;
+                var triangleXPoint = (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth / 5;
+                var circleDiameter = mode.magnitude * p.windowHeight;
 
                 var startPoint = {
                     x: triangleXPoint,
