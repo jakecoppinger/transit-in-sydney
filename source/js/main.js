@@ -90,6 +90,7 @@ var main = function(p) {
                     windowCorners.topLeft)
             };
 
+
             var modes = {
                 "Yellow": {
                     color: yellow,
@@ -97,7 +98,7 @@ var main = function(p) {
                     yLevel: p.windowHeight * (1 / 5)
                 },
                 "Green": {
-                    color: orange,
+                    color: green, //orange,
                     magnitude: mouseDiagonals.posSlope2,
                     yLevel: p.windowHeight * (2 / 5)
                 },
@@ -124,12 +125,23 @@ var main = function(p) {
 
 
             var currentDistance = p.currentMouseDistanceKM();
-            var nearestPoints = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
-            p.drawCurrentSuburbs(nearestPoints);
+            var nps = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
+            p.drawCurrentSuburbs(nps);
+
+
+            var above = (nps.below.kmFromSuburb);
+            var below = (nps.above.kmFromSuburb);
+            var betweenSum = above + below;
+
+            var ratio = nps.below.kmFromSuburb / betweenSum;
+
+            var belowSuburbWeighting = 1-ratio;
+            var aboveSuburbWeighting = ratio;
+            console.log(nps.below.suburb + ": " + belowSuburbWeighting + ", " + nps.above.suburb + ": " + aboveSuburbWeighting);
 
             var debugString = "";
             debugString += "fps: " + p.frameRate() + "\n";
-            debugString += p.prettyStr(nearestPoints);
+            debugString += p.prettyStr(nps);
             p.drawDebugText(debugString);
 
 
