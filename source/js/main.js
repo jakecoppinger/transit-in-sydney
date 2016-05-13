@@ -34,7 +34,7 @@ var main = function(p) {
         background = 255;
 
         // Send off AJAX request to get the sydney transport data
-        var dataUrl = "/data/city_of_sydney_transport_data_2011.json";
+        var dataUrl = "data/city_of_sydney_transport_data_2011.json";
         var xmlhttp = new XMLHttpRequest();
         var url = dataUrl;
 
