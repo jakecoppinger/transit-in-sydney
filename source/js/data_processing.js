@@ -8,8 +8,7 @@ jake@jakecoppinger.com
 
 var dataProcessing = function(p) {
 
-
-    p.generateModesObject = function() {
+    p.generateModesObject = function(currentDistance, nearestPointsToValue, interpolationRatio) {
 
         var mousePos = new p.Point({
             x: p.mouseX,
@@ -52,24 +51,12 @@ var dataProcessing = function(p) {
         };
 
 
-
-        var currentDistance = p.currentMouseDistanceKM();
-        var nps = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
-
-
-        var above = (nps.below.kmFromSuburb);
-        var below = (nps.above.kmFromSuburb);
-        var betweenSum = above + below;
-
-        var ratio = nps.below.kmFromSuburb / betweenSum;
-
-        var belowSuburbWeighting = 1 - ratio;
-        var aboveSuburbWeighting = ratio;
-
-        modes.Walking.magnitude = ratio;
-        modes.Bus.magnitude = 1 - ratio;
+        modes.Walking.magnitude = interpolationRatio;
+        modes.Bus.magnitude = 1 - interpolationRatio;
 
 
+
+        //console.log(p.percentageSuburbs)
         // console.log(nps.below.suburb + ": " + belowSuburbWeighting + ", " + nps.above.suburb + ": " + aboveSuburbWeighting);
 
 
@@ -111,8 +98,8 @@ var dataProcessing = function(p) {
             "Walked only"
         ];
 
-        var absoluteSuburbs = {};
-        var percentageSuburbs = {};
+        p.absoluteSuburbs = {};
+        p.percentageSuburbs = {};
         var suburbsDistancePoints = [];
 
         var absoluteYearKey = "2011";
@@ -125,8 +112,8 @@ var dataProcessing = function(p) {
 
                     var distance = parseFloat(data[suburb]["Distance from CBD"]);
 
-                    absoluteSuburbs[suburb] = {};
-                    percentageSuburbs[suburb] = {};
+                    p.absoluteSuburbs[suburb] = {};
+                    p.percentageSuburbs[suburb] = {};
 
                     distanceList.push(distance);
 
@@ -135,8 +122,8 @@ var dataProcessing = function(p) {
                         var percentage = data[suburb][mode][percentageYearKey];
                         var absolute = data[suburb][mode][absoluteYearKey];
 
-                        absoluteSuburbs[suburb][mode] = absolute;
-                        percentageSuburbs[suburb][mode] = percentage;
+                        p.absoluteSuburbs[suburb][mode] = absolute;
+                        p.percentageSuburbs[suburb][mode] = percentage;
                     }
                 }
             }

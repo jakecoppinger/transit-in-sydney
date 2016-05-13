@@ -9,8 +9,10 @@ jake@jakecoppinger.com
 var main = function(p) {
 
     var background;
-    var lastMouseY;
-    var lastMouseX;
+
+    // This is so the frame will draw on data load
+    var lastMouseY = -1;
+    var lastMouseX = -1;
 
     // Defining "global" variables.
     // These are populated in p.parseTransitData()
@@ -18,6 +20,7 @@ var main = function(p) {
     p.percentageSuburb = {};
     p.suburbsDistance = {};
     p.maxDistance = {};
+    p.dataLoaded = 0;
 
     p.setup = function() {
         p.createCanvas(p.windowWidth, p.windowHeight);
@@ -48,8 +51,7 @@ var main = function(p) {
 
     p.draw = function() {
         // Only draw to screen when mouse is moving
-        if (p.mouseX != lastMouseX || p.mouseY != lastMouseY && p.dataLoaded == 1) {
-
+        if ((p.mouseX != lastMouseX || p.mouseY != lastMouseY) && p.dataLoaded == 1) {
             var currentDistance = p.currentMouseDistanceKM();
             var nearestPointsToValue = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
 
@@ -58,17 +60,16 @@ var main = function(p) {
             var betweenSum = above + below;
 
             // Where 1 is at the suburb abobe, 0 is below
-            var ratio = nearestPointsToValue.below.kmFromSuburb / betweenSum;
+            var interpolationRatio = nearestPointsToValue.below.kmFromSuburb / betweenSum;
 
             // Where 1 is full opacity!
-            var titleOpacity = Math.abs(ratio - 0.5) * 2;
+            var titleOpacity = Math.abs(interpolationRatio - 0.5) * 2;
 
             var debugString = "";
             debugString += "fps: " + p.frameRate() + "\n";
             debugString += p.prettyStr(nearestPointsToValue);
 
-
-            var modes = p.generateModesObject();
+            var modes = p.generateModesObject(currentDistance, nearestPointsToValue, interpolationRatio);
 
             p.background(background);
             p.noStroke();
@@ -84,9 +85,10 @@ var main = function(p) {
             p.drawTransitTriangles(modes);
             p.drawTransitCircles(modes);
             p.drawTransitArcs(modes);
+
+            lastMouseY = p.mouseY;
+            lastMouseX = p.mouseX;
         }
-        lastMouseY = p.mouseY;
-        lastMouseX = p.mouseX;
     };
 
 
