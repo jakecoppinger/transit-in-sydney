@@ -28,7 +28,6 @@ var dataProcessing = function(p) {
                 windowCorners.topLeft)
         };
 
-
         var modes = {
             "Walking": {
                 color: p.yellow,
@@ -58,8 +57,6 @@ var dataProcessing = function(p) {
         var nps = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
 
 
-
-
         var above = (nps.below.kmFromSuburb);
         var below = (nps.above.kmFromSuburb);
         var betweenSum = above + below;
@@ -70,24 +67,10 @@ var dataProcessing = function(p) {
         var aboveSuburbWeighting = ratio;
 
         modes.Walking.magnitude = ratio;
-        modes.Bus.magnitude = 1-ratio;
+        modes.Bus.magnitude = 1 - ratio;
 
 
-        var titleOpacity = 1 - Math.abs(ratio - (1-ratio));
-
-        // p.drawCurrentSuburbs(nps,titleOpacity);
-
-        // console.log(titleOpacity);
         // console.log(nps.below.suburb + ": " + belowSuburbWeighting + ", " + nps.above.suburb + ": " + aboveSuburbWeighting);
-
-
-
-
-
-
-
-
-
 
 
         return modes;

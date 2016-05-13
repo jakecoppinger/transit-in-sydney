@@ -44,40 +44,11 @@ var main = function(p) {
 
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
-
-        var nearestPoints = p.nearestPointsToValue(1.4, [{
-            label: "One",
-            value: 1
-        }, {
-            label: "Two",
-            value: 2
-        }, {
-            label: "Three",
-            value: 3
-        }]);
-
-        // p.prettyPrint(nearestPoints);
-
-
-
     };
 
     p.draw = function() {
         // Only draw to screen when mouse is moving
         if (p.mouseX != lastMouseX || p.mouseY != lastMouseY && p.dataLoaded == 1) {
-            // var yellowMagnitude = p.calculateMagnitudeForMode("Walked only");            
-
-            var modes = p.generateModesObject();
-
-            p.background(background);
-            p.noStroke();
-            p.blendMode(p.MULTIPLY);
-
-            // Draw triangles
-            p.drawTransitTriangles(modes);
-            p.drawTransitCircles(modes);
-            p.drawTransitArcs(modes);
-
 
             var currentDistance = p.currentMouseDistanceKM();
             var nearestPointsToValue = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
@@ -86,20 +57,33 @@ var main = function(p) {
             var below = (nearestPointsToValue.above.kmFromSuburb);
             var betweenSum = above + below;
 
+            // Where 1 is at the suburb abobe, 0 is below
             var ratio = nearestPointsToValue.below.kmFromSuburb / betweenSum;
 
-
-            var titleOpacity = 1 - Math.abs(ratio - (1 - ratio));
-
-            p.drawCurrentSuburbs(nearestPointsToValue, titleOpacity);
-
+            // Where 1 is full opacity!
+            var titleOpacity = Math.abs(ratio - 0.5) * 2;
 
             var debugString = "";
             debugString += "fps: " + p.frameRate() + "\n";
             debugString += p.prettyStr(nearestPointsToValue);
+
+
+            var modes = p.generateModesObject();
+
+            p.background(background);
+            p.noStroke();
+            p.blendMode(p.MULTIPLY);
+
+            // Draw debug text
             p.drawDebugText(debugString);
 
+            // Draw current suburb title
+            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity);
 
+            // Draw triangles
+            p.drawTransitTriangles(modes);
+            p.drawTransitCircles(modes);
+            p.drawTransitArcs(modes);
         }
         lastMouseY = p.mouseY;
         lastMouseX = p.mouseX;

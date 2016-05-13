@@ -8,16 +8,11 @@ jake@jakecoppinger.com
 
 var view = function(p) {
 
-    p.drawCurrentSuburbs = function(nearestPoints,titleOpacity) {
-
-
+    p.drawCurrentSuburb = function(nearestPoints, titleOpacity) {
         if (nearestPoints.above.suburb) {
             p.push();
 
-            var color = 255 - (titleOpacity * 255);
-            // console.log(titleOpacity);
-            // console.log("Control: " + titleOpacity + ": " + color)
-
+            var color = (1 - titleOpacity) * 255;
             p.fill(color);
 
             var theValue;
@@ -39,8 +34,6 @@ var view = function(p) {
 
             p.pop();
         }
-
-
     };
 
     p.drawTransitTriangle = function(color, tip) {
