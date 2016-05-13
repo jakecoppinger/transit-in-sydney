@@ -7,6 +7,92 @@ jake@jakecoppinger.com
 */
 
 var dataProcessing = function(p) {
+
+
+    p.generateModesObject = function() {
+
+        var mousePos = new p.Point({
+            x: p.mouseX,
+            y: p.mouseY
+        });
+        var windowCorners = p.windowCorners();
+
+        var mouseDiagonals = {
+            "posSlope1": p.percentageToWindowCorner(mousePos, windowCorners.bottomLeft,
+                windowCorners.topRight),
+            "posSlope2": p.percentageToWindowCorner(mousePos, windowCorners.topRight,
+                windowCorners.bottomLeft),
+            "negSlope1": p.percentageToWindowCorner(mousePos, windowCorners.topLeft,
+                windowCorners.bottomRight),
+            "negSlope2": p.percentageToWindowCorner(mousePos, windowCorners.bottomRight,
+                windowCorners.topLeft)
+        };
+
+
+        var modes = {
+            "Walking": {
+                color: p.yellow,
+                magnitude: mouseDiagonals.posSlope1,
+                yLevel: p.windowHeight * (1 / 5)
+            },
+            "Bus": {
+                color: p.green, //orange,
+                magnitude: mouseDiagonals.posSlope2,
+                yLevel: p.windowHeight * (2 / 5)
+            },
+            "Train": {
+                color: p.blue,
+                magnitude: mouseDiagonals.negSlope1,
+                yLevel: p.windowHeight * (3 / 5)
+            },
+            "Car": {
+                color: p.pink,
+                magnitude: mouseDiagonals.negSlope2,
+                yLevel: p.windowHeight * (4 / 5)
+            }
+        };
+
+
+
+        var currentDistance = p.currentMouseDistanceKM();
+        var nps = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
+
+
+
+
+        var above = (nps.below.kmFromSuburb);
+        var below = (nps.above.kmFromSuburb);
+        var betweenSum = above + below;
+
+        var ratio = nps.below.kmFromSuburb / betweenSum;
+
+        var belowSuburbWeighting = 1 - ratio;
+        var aboveSuburbWeighting = ratio;
+
+        modes.Walking.magnitude = ratio;
+        modes.Bus.magnitude = 1-ratio;
+
+
+        var titleOpacity = 1 - Math.abs(ratio - (1-ratio));
+
+        // p.drawCurrentSuburbs(nps,titleOpacity);
+
+        // console.log(titleOpacity);
+        // console.log(nps.below.suburb + ": " + belowSuburbWeighting + ", " + nps.above.suburb + ": " + aboveSuburbWeighting);
+
+
+
+
+
+
+
+
+
+
+
+        return modes;
+    };
+
     p.parseTransitData = function(data) {
         var chosenSuburbs = ["Sydney",
             "Haymarket",

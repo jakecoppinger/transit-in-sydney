@@ -7,10 +7,7 @@ jake@jakecoppinger.com
 */
 
 var main = function(p) {
-    var purple;
-    var blue;
-    var green;
-    var yellow;
+
     var background;
     var lastMouseY;
     var lastMouseX;
@@ -25,11 +22,12 @@ var main = function(p) {
     p.setup = function() {
         p.createCanvas(p.windowWidth, p.windowHeight);
         // Defining global colors
-        yellow = p.color(222, 207, 34);
-        green = p.color(9, 141, 68);
-        blue = p.color(0, 153, 202);
-        pink = p.color(204, 25, 119);
-        orange = p.color(230, 73, 35);
+        p.yellow = p.color(222, 207, 34);
+        p.green = p.color(9, 141, 68);
+        p.blue = p.color(0, 153, 202);
+        p.pink = p.color(204, 25, 119);
+        p.orange = p.color(230, 73, 35);
+
         background = 255;
 
         // Send off AJAX request to get the sydney transport data
@@ -67,52 +65,9 @@ var main = function(p) {
     p.draw = function() {
         // Only draw to screen when mouse is moving
         if (p.mouseX != lastMouseX || p.mouseY != lastMouseY && p.dataLoaded == 1) {
-            //console.log("Drawing!");
+            // var yellowMagnitude = p.calculateMagnitudeForMode("Walked only");            
 
-            var mousePos = new p.Point({
-                x: p.mouseX,
-                y: p.mouseY
-            });
-
-            // var yellowMagnitude = p.calculateMagnitudeForMode("Walked only");
-
-
-            var windowCorners = p.windowCorners();
-
-            var mouseDiagonals = {
-                "posSlope1": p.percentageToWindowCorner(mousePos, windowCorners.bottomLeft,
-                    windowCorners.topRight),
-                "posSlope2": p.percentageToWindowCorner(mousePos, windowCorners.topRight,
-                    windowCorners.bottomLeft),
-                "negSlope1": p.percentageToWindowCorner(mousePos, windowCorners.topLeft,
-                    windowCorners.bottomRight),
-                "negSlope2": p.percentageToWindowCorner(mousePos, windowCorners.bottomRight,
-                    windowCorners.topLeft)
-            };
-
-
-            var modes = {
-                "Yellow": {
-                    color: yellow,
-                    magnitude: mouseDiagonals.posSlope1,
-                    yLevel: p.windowHeight * (1 / 5)
-                },
-                "Green": {
-                    color: green, //orange,
-                    magnitude: mouseDiagonals.posSlope2,
-                    yLevel: p.windowHeight * (2 / 5)
-                },
-                "Blue": {
-                    color: blue,
-                    magnitude: mouseDiagonals.negSlope1,
-                    yLevel: p.windowHeight * (3 / 5)
-                },
-                "Pink": {
-                    color: pink,
-                    magnitude: mouseDiagonals.negSlope2,
-                    yLevel: p.windowHeight * (4 / 5)
-                }
-            };
+            var modes = p.generateModesObject();
 
             p.background(background);
             p.noStroke();
@@ -125,23 +80,23 @@ var main = function(p) {
 
 
             var currentDistance = p.currentMouseDistanceKM();
-            var nps = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
-            p.drawCurrentSuburbs(nps);
+            var nearestPointsToValue = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
 
-
-            var above = (nps.below.kmFromSuburb);
-            var below = (nps.above.kmFromSuburb);
+            var above = (nearestPointsToValue.below.kmFromSuburb);
+            var below = (nearestPointsToValue.above.kmFromSuburb);
             var betweenSum = above + below;
 
-            var ratio = nps.below.kmFromSuburb / betweenSum;
+            var ratio = nearestPointsToValue.below.kmFromSuburb / betweenSum;
 
-            var belowSuburbWeighting = 1-ratio;
-            var aboveSuburbWeighting = ratio;
-            console.log(nps.below.suburb + ": " + belowSuburbWeighting + ", " + nps.above.suburb + ": " + aboveSuburbWeighting);
+
+            var titleOpacity = 1 - Math.abs(ratio - (1 - ratio));
+
+            p.drawCurrentSuburbs(nearestPointsToValue, titleOpacity);
+
 
             var debugString = "";
             debugString += "fps: " + p.frameRate() + "\n";
-            debugString += p.prettyStr(nps);
+            debugString += p.prettyStr(nearestPointsToValue);
             p.drawDebugText(debugString);
 
 

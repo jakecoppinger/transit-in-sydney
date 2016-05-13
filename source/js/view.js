@@ -8,12 +8,18 @@ jake@jakecoppinger.com
 
 var view = function(p) {
 
-    p.drawCurrentSuburbs = function(nearestPoints) {
+    p.drawCurrentSuburbs = function(nearestPoints,titleOpacity) {
 
 
         if (nearestPoints.above.suburb) {
             p.push();
-            p.fill(0);
+
+            var color = 255 - (titleOpacity * 255);
+            // console.log(titleOpacity);
+            // console.log("Control: " + titleOpacity + ": " + color)
+
+            p.fill(color);
+
             var theValue;
             var theSuburb;
 
