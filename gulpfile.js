@@ -51,28 +51,28 @@ gulp.task('lint', function() {
 // Copy and optimise data
 gulp.task('data', function() {
     var data = gulp.src([
-        'source/data/**/*.json'
-    ])
-    .pipe(jsonminify())
-    .pipe(gulp.dest('dist/data'));
+            'source/data/**/*.json'
+        ])
+        .pipe(jsonminify())
+        .pipe(gulp.dest('dist/data'));
 
 });
 
 // Copy images
 gulp.task('images', function() {
     var data = gulp.src([
-        'source/images/**/*'
-    ])
-    .pipe(gulp.dest('dist/images'));
+            'source/images/**/*'
+        ])
+        .pipe(gulp.dest('dist/images'));
 
 });
 
 // Copy fonts
 gulp.task('fonts', function() {
     var data = gulp.src([
-        'source/fonts/*'
-    ])
-    .pipe(gulp.dest('dist/fonts'));
+            'source/fonts/*'
+        ])
+        .pipe(gulp.dest('dist/fonts'));
 });
 
 
@@ -122,16 +122,14 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('build', ['clean'], function(cb) {
     runSequence(
-        ['copy', 'js','data','fonts','images'],
+        ['copy', 'js', 'data', 'fonts', 'images'],
         cb);
 });
 
-gulp.task('deploy', function () {
-  return run('git subtree push --prefix dist origin gh-pages').exec()
-    //.pipe(gulp.dest('output'))    // Writes "Hello World\n" to output/echo. 
+gulp.task('deploy', function() {
+    return run('git subtree push --prefix dist origin gh-pages').exec()
+        //.pipe(gulp.dest('output'))    // Writes "Hello World\n" to output/echo. 
 })
 
 
 gulp.task('default', ['serve']);
-
-
