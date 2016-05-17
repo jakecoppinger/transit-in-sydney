@@ -8,11 +8,56 @@ jake@jakecoppinger.com
 
 var view = function(p) {
 
+    p.minimumWindowSize = function() {
+        var windowWidth = p.windowWidth;
+        var windowHeight = p.windowHeight;
+
+        if (windowWidth < windowHeight) {
+            return windowWidth;
+        } else {
+            return windowHeight;
+        }
+    };
+
+    p.drawBottomSlider = function(currentDistance) {
+
+        p.push();
+
+        p.fill(0);
+
+        var triangleCentre = {
+            x: (currentDistance / p.maxDistance) * p.windowWidth,
+            y: p.windowHeight - (p.windowHeight / 15)
+        };
+
+        var triangleSize = p.minimumWindowSize() / 50;
+
+        var trianglePoints = {
+            p1: {
+                x: triangleCentre.x - triangleSize,
+                y: triangleCentre.y - triangleSize
+            },
+            p2: {
+                x: triangleCentre.x - triangleSize,
+                y: triangleCentre.y + triangleSize
+            },
+            p3: {
+                x: triangleCentre.x,
+                y: triangleCentre.y
+            }
+        };
+
+        p.drawTriangle(trianglePoints);
+
+
+        p.pop();
+    };
+
     p.drawCurrentSuburb = function(nearestPoints, titleOpacity) {
         if (nearestPoints.above.suburb) {
             p.push();
 
-            var color = (1 - titleOpacity) * 255;
+            var color = 255 - (titleOpacity * 255);
             p.fill(color);
 
             var theValue;
@@ -26,11 +71,22 @@ var view = function(p) {
                 theSuburb = nearestPoints.below.suburb;
             }
 
-            var s = theSuburb;
-            p.textSize(p.windowHeight / 9);
-            var textIndent = p.windowHeight / 3;
 
-            p.text(s, textIndent, textIndent);
+            p.blendMode(p.NORMAL);
+
+
+            var s = theSuburb;
+            p.textSize(p.windowWidth / 9);
+
+            p.textAlign(p.CENTER);
+            var textPos = {
+                x: p.windowWidth / 2,
+                y: p.windowHeight / 2
+            };
+
+
+            // p.rectMode(p.CENTER);
+            p.text(s, textPos.x, textPos.y);
 
             p.pop();
         }
@@ -86,7 +142,9 @@ var view = function(p) {
 
     p.drawTransitFigures = function(modes) {
         p.push();
-        p.fill(0);
+
+        p.textSize(p.windowHeight / 19);
+
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
 
@@ -96,10 +154,26 @@ var view = function(p) {
                     y: mode.yLevel
                 };
 
-                var s = (Math.round(mode.magnitude * 100 * 10) / 10).toString() + "%";
-                p.textSize(p.windowHeight / 19);
-                var textIndent = p.windowHeight / 3;
-                p.text(s, textPos.x, textPos.y);
+                var countTextYoffset = 50;
+
+
+                var percentageColor = (1 - mode.percentageRatio) * 255;
+                var countColor = mode.percentageRatio * 255;
+
+
+
+                var percentageString = (Math.round(mode.interpolatedPercentage * 100 * 10) / 10).toString() + "%";
+                var countString = Math.round(mode.interpolatedCount).toString() + "people";
+
+                var s = percentageString + "\n" + countString;
+
+                p.fill(percentageColor);
+                p.text(percentageString, textPos.x, textPos.y);
+                p.fill(countColor);
+
+                p.text(countString, textPos.x, textPos.y + countTextYoffset);
+
+
             }
         }
         p.pop();

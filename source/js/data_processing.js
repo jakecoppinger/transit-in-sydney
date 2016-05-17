@@ -60,12 +60,27 @@ var dataProcessing = function(p) {
                 var belowSuburb = nearestPointsToValue.below.suburb;
                 var aboveSuburb = nearestPointsToValue.above.suburb;
 
+                var belowModeCount = p.suburbModeCounts[belowSuburb][mode];
+                var aboveModeCount = p.suburbModeCounts[aboveSuburb][mode];
+
                 var belowModePercentage = p.suburbModePercentages[belowSuburb][mode];
                 var aboveModePercetage = p.suburbModePercentages[aboveSuburb][mode];
 
-                // Here's the magic!
-                var magnitude = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercetage);
+                var percentageCountRatio = mousePos.y / p.windowHeight;
+                
+                // Here's the magic maths!
+                var percentageMagnitude = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercetage);
+                
+                var interpolatedCount = (belowPercentage * belowModeCount + abovePercentage * aboveModeCount);
+                var countMagnitude =  interpolatedCount / p.maxModeCount;
 
+                var magnitude = (percentageCountRatio * percentageMagnitude) + ((1- percentageCountRatio) * countMagnitude);
+
+
+                modes[mode].interpolatedPercentage = percentageMagnitude;
+                modes[mode].interpolatedCount = interpolatedCount;
+
+                modes[mode].percentageRatio = percentageCountRatio;
                 modes[mode].magnitude = magnitude;
             }
         }
@@ -113,6 +128,9 @@ var dataProcessing = function(p) {
         p.maxSuburbPercentage = 0;
         p.maxSuburbCount = 0;
 
+
+        p.maxModeCount = 0;
+
         var suburbsDistancePoints = [];
         var absoluteYearKey = "2011";
         var percentageYearKey = absoluteYearKey + "%";
@@ -132,10 +150,14 @@ var dataProcessing = function(p) {
                     for (var i = 0; i < chosenModes.length; i++) {
                         mode = chosenModes[i];
                         var percentage = parseFloat(data[suburb][mode][percentageYearKey]) / 100;
-                        var absolute = parseFloat(data[suburb][mode][absoluteYearKey]) / 100;
+                        var absolute = parseFloat(data[suburb][mode][absoluteYearKey]);
 
                         p.suburbModeCounts[suburb][mode] = absolute;
                         p.suburbModePercentages[suburb][mode] = percentage;
+
+                        if(absolute > p.maxModeCount) {
+                            p.maxModeCount = absolute;
+                        }
 
                         if (percentage > p.maxSuburbPercentage) {
                             p.maxSuburbPercentage = percentage;

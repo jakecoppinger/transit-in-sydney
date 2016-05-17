@@ -76,10 +76,13 @@ var main = function(p) {
             p.blendMode(p.MULTIPLY);
 
             // Draw debug text
-            p.drawDebugText(debugString);
+            // p.drawDebugText(debugString);
 
             // Draw current suburb title
             p.drawCurrentSuburb(nearestPointsToValue, titleOpacity);
+
+
+            p.drawBottomSlider(currentDistance);
 
             // Draw triangles
             p.drawTransitTriangles(modes);

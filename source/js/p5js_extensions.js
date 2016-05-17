@@ -16,4 +16,9 @@ var p5jsExtensions = function(p) {
         p.pop();
     };
 
+    p.drawTriangle = function(points) {
+        p.triangle(points.p1.x, points.p1.y, points.p2.x, points.p2.y,
+            points.p3.x, points.p3.y);
+    };
+
 };
