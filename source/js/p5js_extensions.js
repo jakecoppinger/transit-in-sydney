@@ -1,3 +1,11 @@
+/*
+
+Jake Coppinger, 2016
+jakecoppinger.com
+jake@jakecoppinger.com
+
+*/
+
 var p5jsExtensions = function(p) {
     p.bezierVertexPoint = function(firstControlPoint, secondControlPoint, anchorPoint) {
         p.bezierVertex(firstControlPoint.x, firstControlPoint.y,
@@ -20,5 +28,4 @@ var p5jsExtensions = function(p) {
         p.triangle(points.p1.x, points.p1.y, points.p2.x, points.p2.y,
             points.p3.x, points.p3.y);
     };
-
 };

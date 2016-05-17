@@ -59,7 +59,7 @@ var main = function(p) {
             var below = (nearestPointsToValue.above.kmFromSuburb);
             var betweenSum = above + below;
 
-            // Where 1 is at the suburb abobe, 0 is below
+            // Where 1 is at the suburb above, 0 is below
             var interpolationRatio = nearestPointsToValue.below.kmFromSuburb / betweenSum;
 
             // Where 1 is full opacity!
@@ -81,7 +81,7 @@ var main = function(p) {
             // Draw current suburb title
             p.drawCurrentSuburb(nearestPointsToValue, titleOpacity);
 
-
+            // Draw slider at bottom of window
             p.drawBottomSlider(currentDistance);
 
             // Draw triangles

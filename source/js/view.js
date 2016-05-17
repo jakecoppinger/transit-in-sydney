@@ -20,9 +20,7 @@ var view = function(p) {
     };
 
     p.drawBottomSlider = function(currentDistance) {
-
         p.push();
-
         p.fill(0);
 
         var triangleCentre = {
@@ -48,8 +46,6 @@ var view = function(p) {
         };
 
         p.drawTriangle(trianglePoints);
-
-
         p.pop();
     };
 
@@ -74,7 +70,6 @@ var view = function(p) {
 
             p.blendMode(p.NORMAL);
 
-
             var s = theSuburb;
             p.textSize(p.windowWidth / 9);
 
@@ -83,7 +78,6 @@ var view = function(p) {
                 x: p.windowWidth / 2,
                 y: p.windowHeight / 2
             };
-
 
             // p.rectMode(p.CENTER);
             p.text(s, textPos.x, textPos.y);
@@ -150,36 +144,31 @@ var view = function(p) {
 
                 var mode = modes[modeName];
                 var textPos = {
-                    x: (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth,
+                    x: mode.magnitude,
                     y: mode.yLevel
                 };
 
                 var countTextYoffset = 50;
 
-
                 var percentageColor = (1 - mode.percentageRatio) * 255;
                 var countColor = mode.percentageRatio * 255;
-
-
 
                 var percentageString = (Math.round(mode.interpolatedPercentage * 100 * 10) / 10).toString() + "%";
                 var countString = Math.round(mode.interpolatedCount).toString() + "people";
 
                 var s = percentageString + "\n" + countString;
 
+                console.log(textPos);
+
                 p.fill(percentageColor);
                 p.text(percentageString, textPos.x, textPos.y);
                 p.fill(countColor);
 
                 p.text(countString, textPos.x, textPos.y + countTextYoffset);
-
-
             }
         }
         p.pop();
     };
-
-
 
     p.drawTransitArcs = function(modes) {
         p.push();
@@ -191,11 +180,11 @@ var view = function(p) {
 
                 var mode = modes[modeName];
                 var circleCenter = {
-                    x: (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth,
+                    x: mode.magnitude * p.windowWidth,
                     y: mode.yLevel
                 };
 
-                var triangleXPoint = (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth / 5;
+                var triangleXPoint = mode.magnitude * p.windowWidth / 5;
                 var circleDiameter = mode.magnitude * p.windowHeight;
 
                 var startPoint = {

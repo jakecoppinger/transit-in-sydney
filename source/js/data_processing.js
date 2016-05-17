@@ -69,10 +69,11 @@ var dataProcessing = function(p) {
                 var percentageCountRatio = mousePos.y / p.windowHeight;
                 
                 // Here's the magic maths!
-                var percentageMagnitude = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercetage);
-                
+                var interpolatedPercentage = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercetage);
                 var interpolatedCount = (belowPercentage * belowModeCount + abovePercentage * aboveModeCount);
-                var countMagnitude =  interpolatedCount / p.maxModeCount;
+
+                var percentageMagnitude = interpolatedPercentage / p.maxPercentage;
+                var countMagnitude =  interpolatedCount / p.maxCount;
 
                 var magnitude = (percentageCountRatio * percentageMagnitude) + ((1- percentageCountRatio) * countMagnitude);
 
@@ -125,11 +126,9 @@ var dataProcessing = function(p) {
 
         p.suburbModeCounts = {};
         p.suburbModePercentages = {};
-        p.maxSuburbPercentage = 0;
-        p.maxSuburbCount = 0;
 
-
-        p.maxModeCount = 0;
+        p.maxPercentage = 0;
+        p.maxCount = 0;
 
         var suburbsDistancePoints = [];
         var absoluteYearKey = "2011";
@@ -155,15 +154,11 @@ var dataProcessing = function(p) {
                         p.suburbModeCounts[suburb][mode] = absolute;
                         p.suburbModePercentages[suburb][mode] = percentage;
 
-                        if(absolute > p.maxModeCount) {
-                            p.maxModeCount = absolute;
+                        if (percentage > p.maxPercentage) {
+                            p.maxPercentage = percentage;
                         }
-
-                        if (percentage > p.maxSuburbPercentage) {
-                            p.maxSuburbPercentage = percentage;
-                        }
-                        if (absolute > p.maxSuburbCount) {
-                            p.maxSuburbCount = absolute;
+                        if (absolute > p.maxCount) {
+                            p.maxCount = absolute;
                         }
 
                     }
@@ -171,14 +166,17 @@ var dataProcessing = function(p) {
             }
         }
 
-        console.log(p.maxSuburbPercentage);
-
         p.suburbsDistance = p.generateSuburbDistances(data, chosenSuburbs);
 
         p.maxDistance = Math.max.apply(Math, distanceList);
         p.dataLoaded = 1;
 
-        console.log("We have our data!");
+        console.log("JSON data is loaded and parsed.");
+
+
+        console.log("Max count of any suburb mode: " + p.maxCount);
+        console.log("Max percentage of any suburb mode: " + p.maxPercentage);
+
     };
 
     p.generateSuburbDistances = function(data, chosenSuburbs) {
