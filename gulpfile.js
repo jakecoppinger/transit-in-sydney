@@ -64,9 +64,7 @@ gulp.task('fonts', function() {
     var data = gulp.src([
         'source/fonts/*'
     ])
-    .pipe(jsonminify())
     .pipe(gulp.dest('dist/fonts'));
-
 });
 
 
