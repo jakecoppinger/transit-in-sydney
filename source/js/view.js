@@ -124,7 +124,7 @@ var view = function(p) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
                 var circlePosition = {
-                    x: (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth,
+                    x: mode.magnitude * p.windowWidth,
                     y: mode.yLevel
                 };
                 var circleDiameter = mode.magnitude * p.windowHeight;
@@ -177,6 +177,7 @@ var view = function(p) {
                 var controlLength = p.windowWidth / 10;
 
                 var mode = modes[modeName];
+
                 var circleCenter = {
                     x: mode.magnitude * p.windowWidth,
                     y: mode.yLevel
@@ -193,9 +194,16 @@ var view = function(p) {
                     x: circleCenter.x,
                     y: mode.yLevel - (circleDiameter / 2)
                 };
+
+
                 var bottomEndPoint = {
                     x: circleCenter.x,
                     y: mode.yLevel + (circleDiameter / 2)
+                };
+
+                var rightArrowPoint = {
+                    x: circleCenter.x + (circleDiameter / 2),
+                    y: circleCenter.y
                 };
 
                 var top = {
@@ -230,6 +238,11 @@ var view = function(p) {
 
                 // Draw top bezier
                 p.bezierVertexPoint(top.startControlP, top.endControlP, topEndPoint);
+
+
+                // Vertex at right side of circle
+                p.vertexPoint(rightArrowPoint);
+
                 // Vertex at bottom of circle
                 p.vertexPoint(bottomEndPoint);
 
@@ -248,10 +261,18 @@ var view = function(p) {
                 p.line(bottomEndPoint.x, bottomEndPoint.y, bottom.endControlP.x, bottom.endControlP.y);
                 p.stroke(0, 0, 0);
 
-                var dotRadius = 20;
+                var dotDiameter = circleDiameter * 9.4/10;
+                //(Math.sqrt(Math.pow(circleDiameter,2)/2));
+
+                console.log(dotDiameter);
                 p.push();
-                p.fill(0, 0, 255);
-                p.ellipse(circleCenter.x, circleCenter.y, dotRadius, dotRadius);
+                //p.blendMode(p.OVERLAY);
+                
+                p.blendMode(p.OVERLAY);
+
+                p.noStroke();
+                p.fill(175);
+                p.ellipse(circleCenter.x, circleCenter.y, dotDiameter, dotDiameter);
                 p.pop();
             }
         }
