@@ -20,14 +20,16 @@ var drawTextAndLabels = function(p) {
         p.push();
 
         p.textFont(p.typeface);
-        p.blendMode(p.DODGE);
-        p.textAlign(p.CENTER);
+        // p.blendMode(p.DODGE);
+        p.textAlign(p.LEFT);
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
 
+                var circleDiameter = mode.magnitude * globalDrawVals.circleDiameterRatio;
+
                 var textPos = {
-                    x: mode.magnitude * p.windowWidth + (p.windowWidth / 20),
+                    x: mode.magnitude * p.windowWidth + circleDiameter / 1.8,
                     y: mode.yLevel
                 };
 
@@ -35,7 +37,7 @@ var drawTextAndLabels = function(p) {
                 var countColor = mode.percentageRatio * 255;
 
                 var percentageString = (Math.round(mode.interpolatedPercentage * 100 * 10) / 10).toString() + "%";
-                var countString = Math.round(mode.interpolatedCount).toString();
+                var countString = Math.round(mode.interpolatedCount).toString() + " people";
 
                 var s = percentageString + "\n" + countString;
 

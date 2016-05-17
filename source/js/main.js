@@ -158,7 +158,8 @@ var main = function(p) {
 
     p.updateGlobalDrawVals = function(modes) {
         return {
-            circleDiameterRatio: p.windowHeight / 1.6
+            circleDiameterRatio: p.windowHeight / 1.6,
+            triangleSizeVsArc: 1 / 4
         };
     };
 
