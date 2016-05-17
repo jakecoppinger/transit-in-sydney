@@ -62,10 +62,7 @@ var drawTextAndLabels = function(p) {
 
 
     p.drawModeLabels = function(modes) {
-
-
         p.push();
-
         p.textFont(p.typeface);
 
         p.imageMode(p.CENTER);
@@ -133,7 +130,7 @@ var drawTextAndLabels = function(p) {
 
             p.textSize(p.windowWidth / 7.5);
 
-            p.textAlign(p.CENTER,p.CENTER);
+            p.textAlign(p.CENTER, p.CENTER);
 
             var textPos = {
                 x: p.windowWidth / 2,
@@ -186,7 +183,7 @@ var drawTextAndLabels = function(p) {
 
         var textPos = {
             x: trianglePoints.p3.x - (p.windowWidth / 40),
-            y: trianglePoints.p3.y 
+            y: trianglePoints.p3.y
         };
 
         // p.rectMode(p.CENTER);
@@ -196,13 +193,13 @@ var drawTextAndLabels = function(p) {
 
 
 
-    p.drawVerticalSlider = function(currentDistance) {
+    p.drawVerticalSlider = function(globalDrawVals, currentDistance) {
         p.push();
         p.fill(0);
 
         var triangleCentre = {
-            x: (currentDistance / p.maxDistance) * p.windowWidth,
-            y: p.windowHeight - (p.windowHeight / 15)
+            x: p.windowWidth * 98 / 100,
+            y: p.windowHeight * globalDrawVals.percentageCountRatio
         };
 
         var triangleSize = p.minimumWindowSize() / 50;
@@ -210,40 +207,69 @@ var drawTextAndLabels = function(p) {
         var trianglePoints = {
             p1: {
                 x: triangleCentre.x - triangleSize,
-                y: triangleCentre.y - triangleSize
+                y: triangleCentre.y
             },
             p2: {
-                x: triangleCentre.x - triangleSize,
-                y: triangleCentre.y + triangleSize
+                x: triangleCentre.x + triangleSize,
+                y: triangleCentre.y
             },
             p3: {
                 x: triangleCentre.x,
-                y: triangleCentre.y
+                y: triangleCentre.y - triangleSize
             }
         };
 
-        p.drawTriangle(trianglePoints);
 
         p.textFont(p.typeface);
-        var displayString = (Math.round(currentDistance * 10) / 10).toString() + "km from CBD";
+
+        var percentageRatioString = Math.round(globalDrawVals.percentageCountRatio * 100).toString();
+        var countRatioString = Math.round((1 - globalDrawVals.percentageCountRatio) * 100).toString();
+
+        var displayString = percentageRatioString + "% percentage\n" + countRatioString + "% absolute"
 
         p.fill(125);
 
         p.textSize(p.minimumWindowSize() / 40);
 
-        p.textAlign(p.RIGHT, p.CENTER);
-
         var textPos = {
             x: trianglePoints.p3.x - (p.windowWidth / 40),
-            y: trianglePoints.p3.y 
+            y: trianglePoints.p3.y
         };
 
-        // p.rectMode(p.CENTER);
+        p.drawTriangle(trianglePoints);
+        // p.translate(textPos.x,textPos.y);
+        // p.rotate(-p.HALF_PI);
+
+        p.textAlign(p.RIGHT, p.CENTER);
         p.text(displayString, textPos.x, textPos.y);
+
+
         p.pop();
     };
 
+    p.drawJakeCoppinger = function() {
+        p.push();
 
+        p.textFont(p.typeface);
+        p.fill(220);
+        p.textSize(p.minimumWindowSize() / 40);
+
+        var textPos = {
+            x: p.windowWidth * 3 / 100,
+            y: p.windowHeight * 94 / 100
+        };
+
+        // p.translate(textPos.x,textPos.y);
+        // p.rotate(-p.HALF_PI);
+
+        p.textAlign(p.LEFT, p.BOTTOM);
+
+
+        p.textLeading(0);
+
+        p.text("Jake Coppinger / \n2016", textPos.x, textPos.y);
+        p.pop();
+    };
 
 
 };

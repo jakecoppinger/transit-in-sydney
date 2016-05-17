@@ -208,7 +208,7 @@ var dataProcessing = function(p) {
     };
 
     p.currentMouseDistanceKM = function() {
-        return p.mouseX * (p.maxDistance / p.windowWidth);
+        return p.touchX * (p.maxDistance / p.windowWidth);
     };
 
 

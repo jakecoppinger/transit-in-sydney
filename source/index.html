@@ -9,26 +9,29 @@ jake@jakecoppinger.com
 
 <head>
     <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width,user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script language="javascript" type="text/javascript" src="js/libraries/p5.js"></script>
     <script language="javascript" type="text/javascript" src="js/point.js"></script>
     <script language="javascript" type="text/javascript" src="js/p5js_extensions.js"></script>
-
     <script language="javascript" type="text/javascript" src="js/draw_text_and_labels.js"></script>
     <script language="javascript" type="text/javascript" src="js/draw_geometric_shapes.js"></script>
-
     <script language="javascript" type="text/javascript" src="js/inputs.js"></script>
     <script language="javascript" type="text/javascript" src="js/main.js"></script>
     <script language="javascript" type="text/javascript" src="js/data_processing.js"></script>
     <script language="javascript" type="text/javascript" src="js/createP5.js"></script>
     <style>
-    body {
+    body,
+    html,
+    canvas {
         padding: 0;
         margin: 0;
+        min-width: 100%;
+        width: 100%;
+        height: 100vh;
+        position: relative;
     }
-    /*canvas {
-        width:100%;
-        height: 100%;
-    }*/
     </style>
 </head>
 

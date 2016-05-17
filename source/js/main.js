@@ -6,10 +6,19 @@ jake@jakecoppinger.com
 
 */
 
+
+// Code for supporting touch devices
+document.addEventListener('touchstart', function(e) {
+    xStart = e.touches[0].screenX;
+    yStart = e.touches[0].screenY;
+});
+
+document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+});
+
+
 var main = function(p) {
-
-    var background;
-
     // This is so the frame will draw on data load
     var lastMouseY = -1;
     var lastMouseX = -1;
@@ -47,17 +56,12 @@ var main = function(p) {
 
     p.preload = function() {
         p.typeface = p.loadFont("fonts/Akzidenz Grotesk Pro Med Regular.otf");
-
-        p.walk = p.loadImage("images/walk.svg");
-
         p.images = {
             "Walk": p.loadImage("images/walk.svg"),
             "Bus": p.loadImage("images/bus.svg"),
             "Train": p.loadImage("images/train.svg"),
             "Car": p.loadImage("images/car.svg")
         };
-
-        p.car = p.loadImage("images/car.svg");
     };
 
     p.setup = function() {
@@ -68,8 +72,6 @@ var main = function(p) {
         p.blue = p.color(0, 153, 202);
         p.pink = p.color(204, 25, 119);
         p.orange = p.color(230, 73, 35);
-
-        background = 255;
 
         // Send off AJAX request to get the sydney transport data
         var dataUrl = "data/city_of_sydney_transport_data_2011.json";
@@ -89,7 +91,7 @@ var main = function(p) {
 
     p.draw = function() {
         // Only draw to screen when mouse is moving
-        if ((p.mouseX != lastMouseX || p.mouseY != lastMouseY || p.redrawCanvas) && p.dataLoaded == 1) {
+        if ((p.touchX != lastMouseX || p.touchY != lastMouseY || p.redrawCanvas) && p.dataLoaded == 1) {
             var currentDistance = p.currentMouseDistanceKM();
             var nearestPointsToValue = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
 
@@ -107,26 +109,22 @@ var main = function(p) {
             debugString += "fps: " + p.frameRate() + "\n";
             debugString += p.prettyStr(nearestPointsToValue);
 
-
-
             var globalDrawVals = p.updateGlobalDrawVals(modes);
-
             var modes = p.generateModesObject(globalDrawVals, currentDistance, nearestPointsToValue, interpolationRatio);
 
-            p.background(background);
+            p.background(255);
             p.noStroke();
             p.blendMode(p.MULTIPLY);
 
             // Draw debug text
             // p.drawDebugText(debugString);
 
-
-
             // Draw current suburb title
             p.drawCurrentSuburb(nearestPointsToValue, titleOpacity, p.BLEND, 0.3, 1);
 
-            // Draw slider at bottom of window
+            // Draw sliders 
             p.drawBottomSlider(currentDistance);
+            p.drawVerticalSlider(globalDrawVals, currentDistance);
 
             // Draw triangles
             p.drawTransitTriangles(modes);
@@ -134,7 +132,7 @@ var main = function(p) {
             p.drawTransitArcs(modes, globalDrawVals);
 
             // Draw current suburb title
-            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity, p.BURN, 0.7, 1); // BURN
+            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity, p.BURN, 0.5, 1);
 
             // Draw percentage and count for each mode
             p.drawTransitFigures(modes, globalDrawVals);
@@ -142,8 +140,11 @@ var main = function(p) {
             // Draw label for each mode
             p.drawModeLabels(modes);
 
-            lastMouseY = p.mouseY;
-            lastMouseX = p.mouseX;
+            // Draw signiture
+            p.drawJakeCoppinger();
+
+            lastMouseY = p.touchY;
+            lastMouseX = p.touchX;
             redrawCanvas = 0;
         }
     };
