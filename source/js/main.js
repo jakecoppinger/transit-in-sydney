@@ -156,6 +156,12 @@ var main = function(p) {
 
     };
 
+    p.updateGlobalDrawVals = function(modes) {
+        return {
+            circleDiameterRatio: p.windowHeight / 1.6
+        };
+    };
+
     p.prettyStr = function(data) {
         return JSON.stringify(data, null, 2);
     };
