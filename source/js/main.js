@@ -22,6 +22,11 @@ var main = function(p) {
     p.maxDistance = {};
     p.dataLoaded = 0;
 
+
+    p.globalDrawVals = {
+        triangleSizeVsArc: 1 / 4
+    };
+
     p.setup = function() {
         p.createCanvas(p.windowWidth, p.windowHeight);
         // Defining global colors

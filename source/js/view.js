@@ -100,7 +100,7 @@ var view = function(p) {
                 var mode = modes[modeName];
                 // (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth
 
-                var triangleXPoint = (mode.magnitude / p.maxSuburbPercentage) * p.windowWidth / 5;
+                var triangleXPoint = mode.magnitude * p.windowWidth * p.globalDrawVals.triangleSizeVsArc;
                 p.push();
                 p.fill(mode.color);
                 p.triangle(0, 0, 0, p.windowHeight, triangleXPoint, mode.yLevel);
@@ -158,8 +158,6 @@ var view = function(p) {
 
                 var s = percentageString + "\n" + countString;
 
-                console.log(textPos);
-
                 p.fill(percentageColor);
                 p.text(percentageString, textPos.x, textPos.y);
                 p.fill(countColor);
@@ -184,7 +182,7 @@ var view = function(p) {
                     y: mode.yLevel
                 };
 
-                var triangleXPoint = mode.magnitude * p.windowWidth / 5;
+                var triangleXPoint = mode.magnitude * p.windowWidth * p.globalDrawVals.triangleSizeVsArc;
                 var circleDiameter = mode.magnitude * p.windowHeight;
 
                 var startPoint = {
