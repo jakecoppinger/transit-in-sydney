@@ -99,6 +99,9 @@ var main = function(p) {
             // Draw debug text
             // p.drawDebugText(debugString);
 
+            // Draw current suburb title
+            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity,p.BLEND,0.1,1);
+
 
             // Draw slider at bottom of window
             p.drawBottomSlider(currentDistance);
@@ -110,10 +113,10 @@ var main = function(p) {
             p.drawTransitArcs(modes);
 
 
-            
             // Draw current suburb title
-            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity);
-            
+            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity,p.BURN,0.7,1);
+
+
             lastMouseY = p.mouseY;
             lastMouseX = p.mouseX;
         }

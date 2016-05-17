@@ -48,13 +48,18 @@ var view = function(p) {
         p.pop();
     };
 
-    p.drawCurrentSuburb = function(nearestPoints, titleOpacity) {
+    p.drawCurrentSuburb = function(nearestPoints, titleOpacity, blendMode,opacity, sign) {
         if (nearestPoints.above.suburb) {
             p.push();
-
+            p.blendMode(blendMode); 
             p.textFont(p.typeface);
 
-            var color = 255 - (titleOpacity * 255);
+            var color = 255 - (titleOpacity * opacity * 255);
+            
+            if(sign < 1) {
+                color = 255 - color;
+            }
+
             p.fill(color);
 
             var theValue;
@@ -68,10 +73,6 @@ var view = function(p) {
                 theSuburb = nearestPoints.below.suburb;
             }
 
-
-            p.blendMode(p.NORMAL);
-
-
             var displayString;
             if (theSuburb in p.shortenedSuburbsHash) {
                 displayString = p.shortenedSuburbsHash[theSuburb];
@@ -79,7 +80,10 @@ var view = function(p) {
                 displayString = theSuburb;
             }
 
-            p.textSize(p.windowWidth / 9);
+            displayString = displayString.toLowerCase() + ".";
+
+
+            p.textSize(p.windowWidth / 7.5);
 
             p.textAlign(p.CENTER);
             var textPos = {
@@ -274,8 +278,6 @@ var view = function(p) {
 
                 var dotDiameter = circleDiameter * 9.4 / 10;
                 //(Math.sqrt(Math.pow(circleDiameter,2)/2));
-
-                console.log(dotDiameter);
                 p.push();
                 //p.blendMode(p.OVERLAY);
 
