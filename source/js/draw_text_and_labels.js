@@ -129,12 +129,12 @@ var drawTextAndLabels = function(p) {
                 displayString = theSuburb;
             }
 
-            displayString = displayString.toLowerCase() + ".";
-
+            displayString = displayString + ".";
 
             p.textSize(p.windowWidth / 7.5);
 
-            p.textAlign(p.CENTER);
+            p.textAlign(p.CENTER,p.CENTER);
+
             var textPos = {
                 x: p.windowWidth / 2,
                 y: p.windowHeight / 2
