@@ -1,1 +1,1 @@
-var p5jsExtensions=function(e){e.bezierVertexPoint=function(i,n,t){e.bezierVertex(i.x,i.y,n.x,n.y,t.x,t.y)},e.vertexPoint=function(i){e.vertex(i.x,i.y)},e.drawCircle=function(i,n,t){e.push(),e.fill(i),e.ellipse(n.x,n.y,t,t),e.pop()}};
+var p5jsExtensions=function(e){e.bezierVertexPoint=function(n,i,t){e.bezierVertex(n.x,n.y,i.x,i.y,t.x,t.y)},e.vertexPoint=function(n){e.vertex(n.x,n.y)},e.drawCircle=function(n,i,t){e.push(),e.fill(n),e.ellipse(i.x,i.y,t,t),e.pop()},e.drawTriangle=function(n){e.triangle(n.p1.x,n.p1.y,n.p2.x,n.p2.y,n.p3.x,n.p3.y)}};
