@@ -21,9 +21,7 @@ var drawTextAndLabels = function(p) {
 
         p.textFont(p.typeface);
         // p.blendMode(p.DODGE);
-        p.textAlign(p.LEFT,p.CENTER);
-
-
+        p.textAlign(p.LEFT, p.CENTER);
 
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
@@ -34,7 +32,7 @@ var drawTextAndLabels = function(p) {
 
                 var percentagePos = {
                     x: mode.magnitude * p.windowWidth + circleDiameter / 1.8,
-                    y: mode.yLevel + (1-mode.percentageRatio) * maximumYtextOffset
+                    y: mode.yLevel + (1 - mode.percentageRatio) * maximumYtextOffset
                 };
 
                 var countPos = {
@@ -65,6 +63,9 @@ var drawTextAndLabels = function(p) {
 
     p.drawModeLabels = function(modes) {
         p.push();
+
+        p.textFont(p.typeface);
+
         p.imageMode(p.CENTER);
         p.textSize(p.windowHeight / 10);
         for (var modeName in modes) {
@@ -146,5 +147,53 @@ var drawTextAndLabels = function(p) {
             p.pop();
         }
     };
+
+    p.drawBottomSlider = function(currentDistance) {
+        p.push();
+        p.fill(0);
+
+        var triangleCentre = {
+            x: (currentDistance / p.maxDistance) * p.windowWidth,
+            y: p.windowHeight - (p.windowHeight / 15)
+        };
+
+        var triangleSize = p.minimumWindowSize() / 50;
+
+        var trianglePoints = {
+            p1: {
+                x: triangleCentre.x - triangleSize,
+                y: triangleCentre.y - triangleSize
+            },
+            p2: {
+                x: triangleCentre.x - triangleSize,
+                y: triangleCentre.y + triangleSize
+            },
+            p3: {
+                x: triangleCentre.x,
+                y: triangleCentre.y
+            }
+        };
+
+        p.drawTriangle(trianglePoints);
+
+        p.textFont(p.typeface);
+        var displayString = (Math.round(currentDistance * 10) / 10).toString() + "km from CBD";
+
+        p.fill(125);
+
+        p.textSize(p.minimumWindowSize() / 40);
+
+        p.textAlign(p.RIGHT, p.CENTER);
+
+        var textPos = {
+            x: trianglePoints.p3.x - (p.windowWidth / 40),
+            y: trianglePoints.p3.y 
+        };
+
+        // p.rectMode(p.CENTER);
+        p.text(displayString, textPos.x, textPos.y);
+        p.pop();
+    };
+
 
 };

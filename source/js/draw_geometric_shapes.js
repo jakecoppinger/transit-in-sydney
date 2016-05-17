@@ -19,35 +19,6 @@ var drawGeometricShapes = function(p) {
         }
     };
 
-    p.drawBottomSlider = function(currentDistance) {
-        p.push();
-        p.fill(0);
-
-        var triangleCentre = {
-            x: (currentDistance / p.maxDistance) * p.windowWidth,
-            y: p.windowHeight - (p.windowHeight / 15)
-        };
-
-        var triangleSize = p.minimumWindowSize() / 50;
-
-        var trianglePoints = {
-            p1: {
-                x: triangleCentre.x - triangleSize,
-                y: triangleCentre.y - triangleSize
-            },
-            p2: {
-                x: triangleCentre.x - triangleSize,
-                y: triangleCentre.y + triangleSize
-            },
-            p3: {
-                x: triangleCentre.x,
-                y: triangleCentre.y
-            }
-        };
-
-        p.drawTriangle(trianglePoints);
-        p.pop();
-    };
 
 
 
