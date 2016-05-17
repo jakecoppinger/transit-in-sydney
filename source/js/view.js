@@ -150,7 +150,7 @@ var view = function(p) {
         p.push();
 
         p.textFont(p.typeface);
-        p.blendMode(p.ADD);
+        p.blendMode(p.DODGE);
         p.textAlign(p.CENTER);
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
@@ -290,6 +290,42 @@ var view = function(p) {
                 p.pop();
             }
         }
+        p.pop();
+    };
+
+    p.drawModeLabels = function(modes) {
+
+
+        p.push();
+        p.imageMode(p.CENTER);
+        p.textSize(p.windowHeight / 10);
+        for (var modeName in modes) {
+            if (modes.hasOwnProperty(modeName)) {
+                var mode = modes[modeName];
+
+                var displayString;
+                if (modeName in p.shorternedModesHash) {
+                    displayString = p.shorternedModesHash[modeName];
+                } else {
+                    displayString = modeName;
+                }
+
+                var image = {
+                    x: p.windowWidth * 95 / 100,
+                    y: mode.yLevel,
+                    width: p.windowHeight / 15,
+                    height: p.windowHeight / 15
+                };
+
+
+                p.image(p.images[displayString], image.x, image.y, dWidth = image.width, dHeight = image.height);
+                p.textAlign(p.RIGHT);
+
+                //p.text(displayString, p.windowWidth * 97 / 100, mode.yLevel);
+
+            }
+        }
+
         p.pop();
     };
 

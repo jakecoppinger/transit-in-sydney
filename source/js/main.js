@@ -22,8 +22,9 @@ var main = function(p) {
     p.maxDistance = {};
     p.dataLoaded = 0;
 
+    var redrawCanvas = 0;
 
-     // = "Akzidenz-Grotesk Pro"; // Akzidenz-Grotesk Pro Medium
+    // = "Akzidenz-Grotesk Pro"; // Akzidenz-Grotesk Pro Medium
 
     p.globalDrawVals = {
         triangleSizeVsArc: 1 / 4
@@ -38,9 +39,25 @@ var main = function(p) {
         "Waterloo - Zetland": "Waterloo"
     };
 
+    p.shorternedModesHash = {
+        "Walked only": "Walk",
+        "Car - as driver": "Car"
+    };
+    p.images = {};
 
     p.preload = function() {
-       p.typeface = p.loadFont("fonts/Akzidenz Grotesk Pro Med Regular.otf");
+        p.typeface = p.loadFont("fonts/Akzidenz Grotesk Pro Med Regular.otf");
+
+        p.walk = p.loadImage("images/walk.svg");
+
+        p.images = {
+            "Walk": p.loadImage("images/walk.svg"),
+            "Bus": p.loadImage("images/bus.svg"),
+            "Train": p.loadImage("images/train.svg"),
+            "Car": p.loadImage("images/car.svg")
+        };
+
+        p.car = p.loadImage("images/car.svg");
     };
 
     p.setup = function() {
@@ -72,7 +89,7 @@ var main = function(p) {
 
     p.draw = function() {
         // Only draw to screen when mouse is moving
-        if ((p.mouseX != lastMouseX || p.mouseY != lastMouseY) && p.dataLoaded == 1) {
+        if ((p.mouseX != lastMouseX || p.mouseY != lastMouseY || p.redrawCanvas) && p.dataLoaded == 1) {
             var currentDistance = p.currentMouseDistanceKM();
             var nearestPointsToValue = p.nearestPointsToValue(currentDistance, p.suburbsDistance);
 
@@ -100,8 +117,7 @@ var main = function(p) {
             // p.drawDebugText(debugString);
 
             // Draw current suburb title
-            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity,p.BLEND,0.1,1);
-
+            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity, p.BLEND, 0.3, 1);
 
             // Draw slider at bottom of window
             p.drawBottomSlider(currentDistance);
@@ -109,22 +125,28 @@ var main = function(p) {
             // Draw triangles
             p.drawTransitTriangles(modes);
             p.drawTransitCircles(modes);
-            p.drawTransitFigures(modes);
             p.drawTransitArcs(modes);
 
-
             // Draw current suburb title
-            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity,p.BURN,0.7,1);
+            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity, p.BURN, 0.7, 1); // BURN
 
+            // Draw percentage and count for each mode
+            p.drawTransitFigures(modes);
+
+            // Draw label for each mode
+            p.drawModeLabels(modes);
 
             lastMouseY = p.mouseY;
             lastMouseX = p.mouseX;
+            redrawCanvas = 0;
         }
     };
 
 
     p.windowResized = function() {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
+        p.redrawCanvas = 1;
+
     };
 
     p.mouseMoved = function() {
