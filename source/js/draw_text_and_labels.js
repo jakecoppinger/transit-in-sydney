@@ -62,12 +62,15 @@ var drawTextAndLabels = function(p) {
 
 
     p.drawModeLabels = function(modes) {
+
+
         p.push();
 
         p.textFont(p.typeface);
 
         p.imageMode(p.CENTER);
         p.textSize(p.windowHeight / 10);
+
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
@@ -82,16 +85,12 @@ var drawTextAndLabels = function(p) {
                 var image = {
                     x: mode.magnitude * p.windowWidth, //p.windowWidth * 95 / 100,
                     y: mode.yLevel,
-                    width: p.windowHeight / 15,
-                    height: p.windowHeight / 15
+                    size: mode.magnitude * p.windowWidth / 5
                 };
 
-
-                p.image(p.images[displayString], image.x, image.y, dWidth = image.width, dHeight = image.height);
+                p.image(p.images[displayString], image.x, image.y, dWidth = image.size, dHeight = image.size);
                 p.textAlign(p.RIGHT);
-
                 //p.text(displayString, p.windowWidth * 97 / 100, mode.yLevel);
-
             }
         }
 
