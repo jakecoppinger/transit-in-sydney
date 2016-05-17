@@ -21,16 +21,25 @@ var drawTextAndLabels = function(p) {
 
         p.textFont(p.typeface);
         // p.blendMode(p.DODGE);
-        p.textAlign(p.LEFT);
+        p.textAlign(p.LEFT,p.CENTER);
+
+
+
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
-
                 var circleDiameter = mode.magnitude * globalDrawVals.circleDiameterRatio;
 
-                var textPos = {
+                var maximumYtextOffset = p.windowHeight * mode.magnitude / 7;
+
+                var percentagePos = {
                     x: mode.magnitude * p.windowWidth + circleDiameter / 1.8,
-                    y: mode.yLevel
+                    y: mode.yLevel + (1-mode.percentageRatio) * maximumYtextOffset
+                };
+
+                var countPos = {
+                    x: mode.magnitude * p.windowWidth + circleDiameter / 1.8,
+                    y: mode.yLevel - mode.percentageRatio * maximumYtextOffset
                 };
 
                 var percentageColor = (1 - mode.percentageRatio) * 255;
@@ -39,17 +48,15 @@ var drawTextAndLabels = function(p) {
                 var percentageString = (Math.round(mode.interpolatedPercentage * 100 * 10) / 10).toString() + "%";
                 var countString = Math.round(mode.interpolatedCount).toString() + " people";
 
-                var s = percentageString + "\n" + countString;
-
                 p.textSize(mode.magnitude * globalDrawVals.circleDiameterRatio / 4);
 
-                var countTextYoffset = mode.magnitude * 120;
+                //var countTextYoffset = mode.magnitude * 120;
 
                 p.fill(percentageColor);
-                p.text(percentageString, textPos.x, textPos.y);
-                p.fill(countColor);
+                p.text(percentageString, percentagePos.x, percentagePos.y);
 
-                p.text(countString, textPos.x, textPos.y + countTextYoffset);
+                p.fill(countColor);
+                p.text(countString, countPos.x, countPos.y);
             }
         }
         p.pop();
