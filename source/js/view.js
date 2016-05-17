@@ -7,6 +7,14 @@ jake@jakecoppinger.com
 */
 
 var view = function(p) {
+
+
+    p.updateGlobalDrawVals = function(modes) {
+        return {
+            circleDiameterRatio: p.windowHeight / 1.6
+        };
+    };
+
     p.minimumWindowSize = function() {
         var windowWidth = p.windowWidth;
         var windowHeight = p.windowHeight;
@@ -130,7 +138,7 @@ var view = function(p) {
         p.pop();
     };
 
-    p.drawTransitCircles = function(modes) {
+    p.drawTransitCircles = function(modes,globalDrawVals) {
         p.push();
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
@@ -139,14 +147,15 @@ var view = function(p) {
                     x: mode.magnitude * p.windowWidth,
                     y: mode.yLevel
                 };
-                var circleDiameter = mode.magnitude * p.windowHeight;
+                var circleDiameter = mode.magnitude * globalDrawVals.circleDiameterRatio;
+
                 p.drawCircle(mode.color, circlePosition, circleDiameter);
             }
         }
         p.pop();
     };
 
-    p.drawTransitFigures = function(modes) {
+    p.drawTransitFigures = function(modes,globalDrawVals) {
         p.push();
 
         p.textFont(p.typeface);
@@ -155,8 +164,9 @@ var view = function(p) {
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
                 var mode = modes[modeName];
+
                 var textPos = {
-                    x: mode.magnitude * p.windowWidth,
+                    x: mode.magnitude * p.windowWidth + (p.windowWidth / 20),
                     y: mode.yLevel
                 };
 
@@ -168,8 +178,7 @@ var view = function(p) {
 
                 var s = percentageString + "\n" + countString;
 
-
-                p.textSize(mode.magnitude * 150);
+                p.textSize(mode.magnitude * globalDrawVals.circleDiameterRatio / 4);
 
                 var countTextYoffset = mode.magnitude * 120;
 
@@ -183,7 +192,7 @@ var view = function(p) {
         p.pop();
     };
 
-    p.drawTransitArcs = function(modes) {
+    p.drawTransitArcs = function(modes,globalDrawVals ) {
         p.push();
 
         for (var modeName in modes) {
@@ -192,7 +201,7 @@ var view = function(p) {
 
                 // Define the length and angle of the control lines
                 // that define the top and bottom of the mode arcs
-                var controlLength = mode.magnitude * 300;
+                var controlLength = mode.magnitude * globalDrawVals.circleDiameterRatio / 2;
                 var controlAngle = Math.PI / 4;
 
                 var circleCenter = {
@@ -201,7 +210,7 @@ var view = function(p) {
                 };
 
                 var triangleXPoint = mode.magnitude * p.windowWidth * p.globalDrawVals.triangleSizeVsArc;
-                var circleDiameter = mode.magnitude * p.windowHeight;
+                var circleDiameter = mode.magnitude * globalDrawVals.circleDiameterRatio;
 
                 var startPoint = {
                     x: triangleXPoint,
@@ -311,7 +320,7 @@ var view = function(p) {
                 }
 
                 var image = {
-                    x: p.windowWidth * 95 / 100,
+                    x: mode.magnitude * p.windowWidth, //p.windowWidth * 95 / 100,
                     y: mode.yLevel,
                     width: p.windowHeight / 15,
                     height: p.windowHeight / 15

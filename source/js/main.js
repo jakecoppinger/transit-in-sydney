@@ -116,6 +116,9 @@ var main = function(p) {
             // Draw debug text
             // p.drawDebugText(debugString);
 
+
+            globalDrawVals = p.updateGlobalDrawVals(modes);
+
             // Draw current suburb title
             p.drawCurrentSuburb(nearestPointsToValue, titleOpacity, p.BLEND, 0.3, 1);
 
@@ -124,14 +127,14 @@ var main = function(p) {
 
             // Draw triangles
             p.drawTransitTriangles(modes);
-            p.drawTransitCircles(modes);
-            p.drawTransitArcs(modes);
+            p.drawTransitCircles(modes, globalDrawVals);
+            p.drawTransitArcs(modes, globalDrawVals);
 
             // Draw current suburb title
             p.drawCurrentSuburb(nearestPointsToValue, titleOpacity, p.BURN, 0.7, 1); // BURN
 
             // Draw percentage and count for each mode
-            p.drawTransitFigures(modes);
+            p.drawTransitFigures(modes, globalDrawVals);
 
             // Draw label for each mode
             p.drawModeLabels(modes);
