@@ -61,22 +61,32 @@ var dataProcessing = function(p) {
                 var aboveSuburb = nearestPointsToValue.above.suburb;
 
                 var belowModeCount = p.suburbModeCounts[belowSuburb][mode];
-                var aboveModeCount = p.suburbModeCounts[aboveSuburb][mode];
+
+                var aboveModeCount;
+                var aboveModePercentage;
+
+
+                // If we're not past the end of the page
+                // (only happens when resizing, weird things...)
+                if(aboveSuburb) {
+                    aboveModeCount = p.suburbModeCounts[aboveSuburb][mode];
+                    aboveModePercentage= p.suburbModePercentages[aboveSuburb][mode];
+                }  else {
+                    aboveModeCount = 0;
+                    aboveModePercentage = 0;
+                }
 
                 var belowModePercentage = p.suburbModePercentages[belowSuburb][mode];
-                var aboveModePercetage = p.suburbModePercentages[aboveSuburb][mode];
-
                 var percentageCountRatio = mousePos.y / p.windowHeight;
 
                 // Here's the magic maths!
-                var interpolatedPercentage = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercetage);
+                var interpolatedPercentage = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercentage);
                 var interpolatedCount = (belowPercentage * belowModeCount + abovePercentage * aboveModeCount);
 
                 var percentageMagnitude = interpolatedPercentage / p.maxPercentage;
                 var countMagnitude = interpolatedCount / p.maxCount;
 
                 var magnitude = (percentageCountRatio * percentageMagnitude) + ((1 - percentageCountRatio) * countMagnitude);
-
 
                 modes[mode].interpolatedPercentage = percentageMagnitude;
                 modes[mode].interpolatedCount = interpolatedCount;
