@@ -58,6 +58,14 @@ gulp.task('data', function() {
 
 });
 
+// Copy images
+gulp.task('images', function() {
+    var data = gulp.src([
+        'source/images/**/*'
+    ])
+    .pipe(gulp.dest('dist/images'));
+
+});
 
 // Copy fonts
 gulp.task('fonts', function() {
@@ -114,7 +122,7 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('build', ['clean'], function(cb) {
     runSequence(
-        ['copy', 'js','data','fonts'],
+        ['copy', 'js','data','fonts','images'],
         cb);
 });
 
