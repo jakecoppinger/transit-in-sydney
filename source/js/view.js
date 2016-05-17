@@ -136,27 +136,33 @@ var view = function(p) {
 
     p.drawTransitFigures = function(modes) {
         p.push();
+        p.blendMode(p.ADD);
 
-        p.textSize(p.windowHeight / 19);
+        p.textAlign(p.CENTER);
+
 
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
 
                 var mode = modes[modeName];
                 var textPos = {
-                    x: mode.magnitude,
+                    x: mode.magnitude * p.windowWidth,
                     y: mode.yLevel
                 };
 
-                var countTextYoffset = 50;
 
                 var percentageColor = (1 - mode.percentageRatio) * 255;
                 var countColor = mode.percentageRatio * 255;
 
                 var percentageString = (Math.round(mode.interpolatedPercentage * 100 * 10) / 10).toString() + "%";
-                var countString = Math.round(mode.interpolatedCount).toString() + "people";
+                var countString = Math.round(mode.interpolatedCount).toString();
 
                 var s = percentageString + "\n" + countString;
+
+
+                p.textSize(mode.magnitude * 150);
+
+                var countTextYoffset = mode.magnitude * 120;
 
                 p.fill(percentageColor);
                 p.text(percentageString, textPos.x, textPos.y);
@@ -261,13 +267,13 @@ var view = function(p) {
                 p.line(bottomEndPoint.x, bottomEndPoint.y, bottom.endControlP.x, bottom.endControlP.y);
                 p.stroke(0, 0, 0);
 
-                var dotDiameter = circleDiameter * 9.4/10;
+                var dotDiameter = circleDiameter * 9.4 / 10;
                 //(Math.sqrt(Math.pow(circleDiameter,2)/2));
 
                 console.log(dotDiameter);
                 p.push();
                 //p.blendMode(p.OVERLAY);
-                
+
                 p.blendMode(p.OVERLAY);
 
                 p.noStroke();
