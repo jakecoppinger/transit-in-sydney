@@ -103,6 +103,9 @@ var main = function(p) {
             p.drawCurrentSuburb(nearestPointsToValue, titleOpacity,p.BLEND,0.1,1);
 
 
+
+            p.drawGreenTriangleFix(modes);
+
             // Draw slider at bottom of window
             p.drawBottomSlider(currentDistance);
 

@@ -48,15 +48,15 @@ var view = function(p) {
         p.pop();
     };
 
-    p.drawCurrentSuburb = function(nearestPoints, titleOpacity, blendMode,opacity, sign) {
+    p.drawCurrentSuburb = function(nearestPoints, titleOpacity, blendMode, opacity, sign) {
         if (nearestPoints.above.suburb) {
             p.push();
-            p.blendMode(blendMode); 
+            p.blendMode(blendMode);
             p.textFont(p.typeface);
 
             var color = 255 - (titleOpacity * opacity * 255);
-            
-            if(sign < 1) {
+
+            if (sign < 1) {
                 color = 255 - color;
             }
 
@@ -292,5 +292,10 @@ var view = function(p) {
         p.pop();
     };
 
+
+    p.drawGreenTriangleFix = function(modes) {
+
+
+    };
 
 };
