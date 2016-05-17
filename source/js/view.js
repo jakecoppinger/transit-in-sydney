@@ -48,15 +48,15 @@ var view = function(p) {
         p.pop();
     };
 
-    p.drawCurrentSuburb = function(nearestPoints, titleOpacity, blendMode,opacity, sign) {
+    p.drawCurrentSuburb = function(nearestPoints, titleOpacity, blendMode, opacity, sign) {
         if (nearestPoints.above.suburb) {
             p.push();
-            p.blendMode(blendMode); 
+            p.blendMode(blendMode);
             p.textFont(p.typeface);
 
             var color = 255 - (titleOpacity * opacity * 255);
-            
-            if(sign < 1) {
+
+            if (sign < 1) {
                 color = 255 - color;
             }
 
@@ -188,10 +188,12 @@ var view = function(p) {
 
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
-
-                var controlLength = p.windowWidth / 10;
-
                 var mode = modes[modeName];
+
+                // Define the length and angle of the control lines
+                // that define the top and bottom of the mode arcs
+                var controlLength = mode.magnitude * 300;
+                var controlAngle = Math.PI / 4;
 
                 var circleCenter = {
                     x: mode.magnitude * p.windowWidth,
@@ -210,7 +212,6 @@ var view = function(p) {
                     y: mode.yLevel - (circleDiameter / 2)
                 };
 
-
                 var bottomEndPoint = {
                     x: circleCenter.x,
                     y: mode.yLevel + (circleDiameter / 2)
@@ -223,22 +224,22 @@ var view = function(p) {
 
                 var top = {
                     startControlP: {
-                        x: triangleXPoint + controlLength,
-                        y: mode.yLevel - 50
+                        x: triangleXPoint + controlLength * Math.cos(controlAngle),
+                        y: mode.yLevel - controlLength * Math.sin(controlAngle)
                     },
                     endControlP: {
-                        x: circleCenter.x - controlLength, // fiddle here
+                        x: circleCenter.x - controlLength,
                         y: mode.yLevel - (circleDiameter / 2)
                     }
                 };
 
                 var bottom = {
                     startControlP: {
-                        x: triangleXPoint + controlLength,
-                        y: mode.yLevel + 50
+                        x: triangleXPoint + controlLength * Math.cos(controlAngle),
+                        y: mode.yLevel + controlLength * Math.sin(controlAngle)
                     },
                     endControlP: {
-                        x: circleCenter.x - controlLength, // fiddle here
+                        x: circleCenter.x - controlLength,
                         y: mode.yLevel + (circleDiameter / 2)
                     }
                 };
@@ -269,12 +270,12 @@ var view = function(p) {
                 p.endShape();
 
                 // Draw guiding lines
-                p.stroke(255, 102, 0);
-                p.line(startPoint.x, startPoint.y, top.startControlP.x, top.startControlP.y);
-                p.line(topEndPoint.x, topEndPoint.y, top.endControlP.x, top.endControlP.y);
-                p.line(startPoint.x, startPoint.y, bottom.startControlP.x, bottom.startControlP.y);
-                p.line(bottomEndPoint.x, bottomEndPoint.y, bottom.endControlP.x, bottom.endControlP.y);
-                p.stroke(0, 0, 0);
+                // p.stroke(255, 102, 0);
+                // p.line(startPoint.x, startPoint.y, top.startControlP.x, top.startControlP.y);
+                // p.line(topEndPoint.x, topEndPoint.y, top.endControlP.x, top.endControlP.y);
+                // p.line(startPoint.x, startPoint.y, bottom.startControlP.x, bottom.startControlP.y);
+                // p.line(bottomEndPoint.x, bottomEndPoint.y, bottom.endControlP.x, bottom.endControlP.y);
+                // p.stroke(0, 0, 0);
 
                 var dotDiameter = circleDiameter * 9.4 / 10;
                 //(Math.sqrt(Math.pow(circleDiameter,2)/2));
