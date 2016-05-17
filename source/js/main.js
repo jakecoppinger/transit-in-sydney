@@ -23,6 +23,8 @@ var main = function(p) {
     p.dataLoaded = 0;
 
 
+     // = "Akzidenz-Grotesk Pro"; // Akzidenz-Grotesk Pro Medium
+
     p.globalDrawVals = {
         triangleSizeVsArc: 1 / 4
     };
@@ -34,6 +36,11 @@ var main = function(p) {
         "Centennial Park - Moore Park": "Moore Park",
         "Glebe - Forest Lodge": "Glebe",
         "Waterloo - Zetland": "Waterloo"
+    };
+
+
+    p.preload = function() {
+       p.typeface = p.loadFont("fonts/Akzidenz Grotesk Pro Med Regular.otf");
     };
 
     p.setup = function() {
@@ -92,8 +99,6 @@ var main = function(p) {
             // Draw debug text
             // p.drawDebugText(debugString);
 
-            // Draw current suburb title
-            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity);
 
             // Draw slider at bottom of window
             p.drawBottomSlider(currentDistance);
@@ -101,9 +106,14 @@ var main = function(p) {
             // Draw triangles
             p.drawTransitTriangles(modes);
             p.drawTransitCircles(modes);
-            p.drawTransitArcs(modes);
             p.drawTransitFigures(modes);
+            p.drawTransitArcs(modes);
 
+
+            
+            // Draw current suburb title
+            p.drawCurrentSuburb(nearestPointsToValue, titleOpacity);
+            
             lastMouseY = p.mouseY;
             lastMouseX = p.mouseX;
         }

@@ -58,6 +58,18 @@ gulp.task('data', function() {
 
 });
 
+
+// Copy fonts
+gulp.task('fonts', function() {
+    var data = gulp.src([
+        'source/fonts/*'
+    ])
+    .pipe(jsonminify())
+    .pipe(gulp.dest('dist/fonts'));
+
+});
+
+
 gulp.task('serve', ['lint'], function() {
     browserSync.init({
         server: {
@@ -104,7 +116,7 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('build', ['clean'], function(cb) {
     runSequence(
-        ['copy', 'js','data'],
+        ['copy', 'js','data','fonts'],
         cb);
 });
 

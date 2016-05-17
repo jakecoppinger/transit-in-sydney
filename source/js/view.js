@@ -7,7 +7,6 @@ jake@jakecoppinger.com
 */
 
 var view = function(p) {
-
     p.minimumWindowSize = function() {
         var windowWidth = p.windowWidth;
         var windowHeight = p.windowHeight;
@@ -53,6 +52,8 @@ var view = function(p) {
         if (nearestPoints.above.suburb) {
             p.push();
 
+            p.textFont(p.typeface);
+
             var color = 255 - (titleOpacity * 255);
             p.fill(color);
 
@@ -71,10 +72,8 @@ var view = function(p) {
             p.blendMode(p.NORMAL);
 
 
-            
-
             var displayString;
-            if(theSuburb in p.shortenedSuburbsHash) {
+            if (theSuburb in p.shortenedSuburbsHash) {
                 displayString = p.shortenedSuburbsHash[theSuburb];
             } else {
                 displayString = theSuburb;
@@ -145,20 +144,17 @@ var view = function(p) {
 
     p.drawTransitFigures = function(modes) {
         p.push();
+
+        p.textFont(p.typeface);
         p.blendMode(p.ADD);
-
         p.textAlign(p.CENTER);
-
-
         for (var modeName in modes) {
             if (modes.hasOwnProperty(modeName)) {
-
                 var mode = modes[modeName];
                 var textPos = {
                     x: mode.magnitude * p.windowWidth,
                     y: mode.yLevel
                 };
-
 
                 var percentageColor = (1 - mode.percentageRatio) * 255;
                 var countColor = mode.percentageRatio * 255;
