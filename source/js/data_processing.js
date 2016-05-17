@@ -67,15 +67,15 @@ var dataProcessing = function(p) {
                 var aboveModePercetage = p.suburbModePercentages[aboveSuburb][mode];
 
                 var percentageCountRatio = mousePos.y / p.windowHeight;
-                
+
                 // Here's the magic maths!
                 var interpolatedPercentage = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercetage);
                 var interpolatedCount = (belowPercentage * belowModeCount + abovePercentage * aboveModeCount);
 
                 var percentageMagnitude = interpolatedPercentage / p.maxPercentage;
-                var countMagnitude =  interpolatedCount / p.maxCount;
+                var countMagnitude = interpolatedCount / p.maxCount;
 
-                var magnitude = (percentageCountRatio * percentageMagnitude) + ((1- percentageCountRatio) * countMagnitude);
+                var magnitude = (percentageCountRatio * percentageMagnitude) + ((1 - percentageCountRatio) * countMagnitude);
 
 
                 modes[mode].interpolatedPercentage = percentageMagnitude;

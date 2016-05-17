@@ -27,6 +27,15 @@ var main = function(p) {
         triangleSizeVsArc: 1 / 4
     };
 
+    p.shortenedSuburbsHash = {
+        "Alexandria - Beaconsfield": "Alexandria",
+        "The Rocks - Millers Point - Dawes Point": "The Rocks",
+        "Erskineville - Eveleigh": "Erskineville",
+        "Centennial Park - Moore Park": "Moore Park",
+        "Glebe - Forest Lodge": "Glebe",
+        "Waterloo - Zetland": "Waterloo"
+    };
+
     p.setup = function() {
         p.createCanvas(p.windowWidth, p.windowHeight);
         // Defining global colors

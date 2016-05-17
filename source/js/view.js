@@ -70,7 +70,16 @@ var view = function(p) {
 
             p.blendMode(p.NORMAL);
 
-            var s = theSuburb;
+
+            
+
+            var displayString;
+            if(theSuburb in p.shortenedSuburbsHash) {
+                displayString = p.shortenedSuburbsHash[theSuburb];
+            } else {
+                displayString = theSuburb;
+            }
+
             p.textSize(p.windowWidth / 9);
 
             p.textAlign(p.CENTER);
@@ -80,7 +89,7 @@ var view = function(p) {
             };
 
             // p.rectMode(p.CENTER);
-            p.text(s, textPos.x, textPos.y);
+            p.text(displayString, textPos.x, textPos.y);
 
             p.pop();
         }
