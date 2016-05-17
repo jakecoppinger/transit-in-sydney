@@ -19,9 +19,6 @@ var drawGeometricShapes = function(p) {
         }
     };
 
-
-
-
     p.drawTransitTriangle = function(color, tip) {
         p.push();
         p.fill(color);

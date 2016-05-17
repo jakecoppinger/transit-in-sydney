@@ -107,7 +107,11 @@ var main = function(p) {
             debugString += "fps: " + p.frameRate() + "\n";
             debugString += p.prettyStr(nearestPointsToValue);
 
-            var modes = p.generateModesObject(currentDistance, nearestPointsToValue, interpolationRatio);
+
+
+            var globalDrawVals = p.updateGlobalDrawVals(modes);
+
+            var modes = p.generateModesObject(globalDrawVals, currentDistance, nearestPointsToValue, interpolationRatio);
 
             p.background(background);
             p.noStroke();
@@ -117,7 +121,6 @@ var main = function(p) {
             // p.drawDebugText(debugString);
 
 
-            globalDrawVals = p.updateGlobalDrawVals(modes);
 
             // Draw current suburb title
             p.drawCurrentSuburb(nearestPointsToValue, titleOpacity, p.BLEND, 0.3, 1);
@@ -159,7 +162,8 @@ var main = function(p) {
     p.updateGlobalDrawVals = function(modes) {
         return {
             circleDiameterRatio: p.windowHeight / 1.6,
-            triangleSizeVsArc: 1 / 4
+            triangleSizeVsArc: 1 / 4,
+            percentageCountRatio: p.mouseY / p.windowHeight
         };
     };
 

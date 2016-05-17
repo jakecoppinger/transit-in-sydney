@@ -8,12 +8,12 @@ jake@jakecoppinger.com
 
 var dataProcessing = function(p) {
 
-    p.generateModesObject = function(currentDistance, nearestPointsToValue, interpolationRatio) {
+    p.generateModesObject = function(globalDrawVals, currentDistance, nearestPointsToValue, interpolationRatio) {
 
-        var mousePos = new p.Point({
-            x: p.mouseX,
-            y: p.mouseY
-        });
+        // var mousePos = new p.Point({
+        //     x: p.mouseX,
+        //     y: p.mouseY
+        // });
 
         // var windowCorners = p.windowCorners();
 
@@ -77,7 +77,7 @@ var dataProcessing = function(p) {
                 }
 
                 var belowModePercentage = p.suburbModePercentages[belowSuburb][mode];
-                var percentageCountRatio = mousePos.y / p.windowHeight;
+                var percentageCountRatio = globalDrawVals.percentageCountRatio;
 
                 // Here's the magic maths!
                 var interpolatedPercentage = (belowPercentage * belowModePercentage + abovePercentage * aboveModePercentage);
