@@ -150,7 +150,7 @@ var drawTextAndLabels = function(p) {
 
         var triangleCentre = {
             x: (currentDistance / p.maxDistance) * p.windowWidth,
-            y: p.windowHeight - (p.windowHeight / 15)
+            y: (p.windowHeight / 20)
         };
 
         var triangleSize = p.minimumWindowSize() / 50;
@@ -225,7 +225,7 @@ var drawTextAndLabels = function(p) {
         var percentageRatioString = Math.round(globalDrawVals.percentageCountRatio * 100).toString();
         var countRatioString = Math.round((1 - globalDrawVals.percentageCountRatio) * 100).toString();
 
-        var displayString = percentageRatioString + "% percentage\n" + countRatioString + "% absolute"
+        var displayString = percentageRatioString + "% percentage\n" + countRatioString + "% absolute";
 
         p.fill(125);
 
