@@ -3,7 +3,7 @@ Transit in Sydney
 
 [![Screenshot of darlington](https://raw.githubusercontent.com/jakecoppinger/transit-in-sydney/master/compressed_darlington_screenshot.png)](https://jakecoppinger.github.io/transit-in-sydney/)
 
-# [Demo!](https://jakecoppinger.github.io/transit-in-sydney/)
+### [Demo!](https://jakecoppinger.github.io/transit-in-sydney/)
 
 > An interactive data visualisation of [City of Sydney transport data](http://profile.id.com.au/sydney/travel-to-work) for first-year Computational Design
 
