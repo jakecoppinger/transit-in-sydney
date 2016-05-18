@@ -26,27 +26,21 @@ The vertical position of the mouse position will transition between visualising 
 Development & building
 ----------------------
 - [Install NodeJS and NPM](https://nodejs.org/en/)
-Check they are installed using
-`node --version`
-`npm --version`
+Check they are installed using `node --version` and `npm --version`
 
-- Clone with Git:
-```git clone https://github.com/jakecoppinger/transit-in-sydney.git```
-```cd transit-in-sydney```
+- Clone with Git using `git clone https://github.com/jakecoppinger/transit-in-sydney.git`
+- Change into directory `cd transit-in-sydney`
 
-- Install NPM dependencies (this may take a while)
-`npm install`
+- Install NPM dependencies with `npm install` (this may take a while)
 
 ## Development server
-To serve using Browsersync (with live reload and JavaScript linting):
-`gulp serve`
+To serve using Browsersync (with live reload and JavaScript linting) `gulp serve`
 
 ## Building
-This will build to `dist/`:
 `gulp build`
 
-You can serve up the built files using Python:
-`cd dist/ && python -m SimpleHTTPServer`
+You can serve up the built files using: `cd dist/ && python -m SimpleHTTPServer`
+
 Access this at [http://localhost:8000](http://localhost:8000)
 
 
@@ -75,6 +69,6 @@ Code structure
 
 Author
 ------
-Jake Coppinger, first year Computer Science student.
+Jake Coppinger, a first year Computer Science student based in Sydney, Australia.
 
 See more of my work at [jakecoppinger.com](http://www.jakecoppinger.com)
