@@ -26,13 +26,13 @@ The vertical position of the mouse position will transition between visualising 
 Development & building
 ----------------------
 - [Install NodeJS and NPM](https://nodejs.org/en/)
-Check they are installed using:
+Check they are installed using
 `node --version`
 `npm --version`
 
-- Clone with Git
-`git clone https://github.com/jakecoppinger/transit-in-sydney.git`
-`cd transit-in-sydney`
+- Clone with Git:
+```git clone https://github.com/jakecoppinger/transit-in-sydney.git```
+```cd transit-in-sydney```
 
 - Install NPM dependencies (this may take a while)
 `npm install`
